@@ -1,0 +1,20 @@
+i<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<no2go-calendar>
+    <event-list>
+        <event title="Valentine Technical Meeting" description="Location:&#x9;Call-In #: 888-232-6885 / Code: 5024580 / Host: 2826 / Off-shore:  000-800-100-1282 / Germany:  0800-881-0107 or 0800-525-0254" location="" eventId="http://www.google.com/calendar/feeds/gregor.pfeifer.gp%40gmail.com/events/lspakrr034pbemhb80i236bufg">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-03T16:00:00.120+02:00" endTime="2013-04-03T17:00:00.120+02:00"/>
+            </when-list>
+        </event>
+        <event title="Osterferien Nordrhein-Westfalen" description="Alle Termine auf www.schulferien.org" location="" eventId="http://www.google.com/calendar/feeds/gregor.pfeifer.gp%40gmail.com/events/_9tpn8pbicpin4qb5domksrrichp6gpb9dpflepbjehj62r35domj4c1h6co38c1n64ojidpn60qjcc1i81pm6q3ldhj6asj9cln2srrics">
+            <when-list>
+                <when isAllDayEvent="true" startTime="2013-03-25T01:00:00+01:00" endTime="2013-04-07T02:00:00+02:00"/>
+            </when-list>
+        </event>
+        <event title="Test Title" description="Description" location="Location" eventId="http://www.google.com/calendar/feeds/gregor.pfeifer.gp%40gmail.com/events/r5fohuc5atk3720nvtk42m2no8">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-04T15:00:00.120+02:00" endTime="2013-04-04T16:00:00.120+02:00"/>
+            </when-list>
+        </event>
+    </event-list>
+</no2go-calendar>

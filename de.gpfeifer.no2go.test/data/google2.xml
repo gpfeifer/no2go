@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<no2go-calendar>
+    <event-list>
+        <event title="Umstellung auf Tycho" description="Ziel des Meeting:&#xA;Plan für Umstellung auf Tycho" location="" eventId="http://www.google.com/calendar/feeds/gregor.pfeifer.gp%40gmail.com/events/jsp6qvjmlce5p0gtghkl7ec4go">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-08T14:00:00.120+02:00" endTime="2013-04-08T15:00:00.120+02:00"/>
+            </when-list>
+        </event>
+        <event title="Essen" description="" location="" eventId="http://www.google.com/calendar/feeds/gregor.pfeifer.gp%40gmail.com/events/729tj0cvirgdsb7ul7ffdr2d0s">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-13T19:00:00.120+02:00" endTime="2013-04-13T20:00:00.120+02:00"/>
+            </when-list>
+        </event>
+    </event-list>
+</no2go-calendar>

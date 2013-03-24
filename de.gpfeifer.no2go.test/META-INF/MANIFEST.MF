@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: de.gpfeifer.no2go.test
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: de.gpfeifer.no2go.core;bundle-version="1.0.0",
+ de.gpfeifer.no2go.notes;bundle-version="1.0.0",
+ de.gpfeifer.no2go.e4.app;bundle-version="1.0.0",
+ de.gpfeifer.no2go.google;bundle-version="1.0.0",
+ de.gpfeifer.no2go.securestore;bundle-version="1.0.0",
+ de.gpfeifer.no2go.synch;bundle-version="1.0.0"
+Import-Package: org.hamcrest.core;version="1.1.0",
+ org.junit;version="4.10.0"

@@ -8,12 +8,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
  de.gpfeifer.calendar.core;bundle-version="1.0.0",
- net.cal4j;bundle-version="1.0.0",
  org.eclipse.ui.net,
  org.eclipse.core.net,
  org.eclipse.equinox.security,
  org.eclipse.ui.console,
- org.eclipse.ui.console
+ org.eclipse.ui.console,
+ net.cal4j;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: GPfeifer.de

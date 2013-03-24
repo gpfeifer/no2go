@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<no2go-calendar>
+    <event-list>
+        <event title="Valentine Technical Meeting" description="Biweekly meeting to discuss progress of items reflected on the attached &#xA;spreadsheet." location="Call-In #: 888-232-6885 / Code: 5024580 / Host: 2826 / Off-shore:  000-800-100-1282 / Germany:  0800-881-0107 or 0800-525-0254" eventId="90539F8E07BDFCF385257AFC00558C1D">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-03T16:00:00+02:00" endTime="2013-04-03T16:30:00+02:00"/>
+                <when isAllDayEvent="false" startTime="2013-04-17T16:00:00+02:00" endTime="2013-04-17T16:30:00+02:00"/>
+                <when isAllDayEvent="false" startTime="2013-05-01T16:00:00+02:00" endTime="2013-05-01T16:30:00+02:00"/>
+            </when-list>
+        </event>
+        <event title="Umstellung auf Tycho" description="Ziel des Meeting:&#xA;Plan für Umstellung auf Tycho" location="" eventId="4A8C29EF7CDD5ACB80257B4100643FD2">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-08T14:00:00+02:00" endTime="2013-04-08T15:00:00+02:00"/>
+            </when-list>
+        </event>
+    </event-list>
+</no2go-calendar>

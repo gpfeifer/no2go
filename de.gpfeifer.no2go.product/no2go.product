@@ -34,10 +34,8 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.equinox.sdk"/>
       <feature id="de.gpfeifer.no2go" version="1.0.0.qualifier"/>
       <feature id="org.eclipse.rcp"/>
-      <feature id="org.eclipse.equinox.core.feature"/>
    </features>
 
    <configurations>

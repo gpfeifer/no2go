@@ -60,7 +60,7 @@ Export-Package: com.google.common.annotations,
  de.gpfeifer.calendar.google,
  de.gpfeifer.calendar.notes
 Bundle-Vendor: GPfeifer.de
-Require-Bundle: net.cal4j;bundle-version="1.0.0",
- lotus.notes;bundle-version="1.0.0",
- org.eclipse.equinox.security;bundle-version="1.1.100"
+Require-Bundle: lotus.notes;bundle-version="1.0.0",
+ org.eclipse.equinox.security;bundle-version="1.1.100",
+ net.cal4j;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

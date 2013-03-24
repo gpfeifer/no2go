@@ -447,7 +447,7 @@ public class NotesCalendar {
 			notesVersion = notesSession.getNotesVersion();
 			database = notesSession.getDatabase(server, mailfile, false);
 			if (database == null) {
-				throw new Exception("Couldn't create Lotus Notes Database object.");
+				throw new Exception("Couldn't create Lotus Notes Database object. " + server  + " " + mailfile);
 			}
 			
 		}

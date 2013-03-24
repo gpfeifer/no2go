@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<no2go-calendar>
+    <event-list>
+        <event title="Umstellung auf Tycho" description="Ziel des Meeting:&#xA;Plan für Umstellung auf Tycho" location="" eventId="4A8C29EF7CDD5ACB80257B4100643FD2">
+            <when-list>
+                <when isAllDayEvent="false" startTime="2013-04-08T14:00:00+02:00" endTime="2013-04-08T15:00:00+02:00"/>
+            </when-list>
+        </event>
+    </event-list>
+</no2go-calendar>
