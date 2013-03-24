@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="No2Go" uid="de.gpfeifer.calendar.product.id" id="de.gpfeifer.calendar.ui.no2go" application="de.gpfeifer.calendar.ui.ApplicationID" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+   </launcherArgs>
+
+   <windowImages i16="/de.gpfeifer.calendar.ui/icons/alt_window_16.gif" i32="/de.gpfeifer.calendar.ui/icons/g.gif"/>
+
+   <splash
+      location="de.gpfeifer.calendar.ui"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
+   <launcher name="no2go">
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+   <vm>
+   </vm>
+
+   <license>
+        <url>www.gpfeifer.de</url>
+   </license>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.equinox.sdk"/>
+      <feature id="de.gpfeifer.no2go" version="1.0.0.qualifier"/>
+      <feature id="org.eclipse.rcp"/>
+      <feature id="org.eclipse.equinox.core.feature"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.swt" autoStart="true" startLevel="0" />
+   </configurations>
+
+</product>

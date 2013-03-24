@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GPfeifer Calendar UI
+Bundle-SymbolicName: de.gpfeifer.calendar.ui; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.gpfeifer.calendar.ui.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ de.gpfeifer.calendar.core;bundle-version="1.0.0",
+ net.cal4j;bundle-version="1.0.0",
+ org.eclipse.ui.net,
+ org.eclipse.core.net,
+ org.eclipse.equinox.security,
+ org.eclipse.ui.console,
+ org.eclipse.ui.console
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: GPfeifer.de
+Export-Package: de.gpfeifer.calendar.ui,
+ de.gpfeifer.calendar.ui.actions,
+ de.gpfeifer.calendar.ui.command,
+ de.gpfeifer.calendar.ui.preferences,
+ de.gpfeifer.calendar.ui.views
