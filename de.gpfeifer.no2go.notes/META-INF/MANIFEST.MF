@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Notes
 Bundle-SymbolicName: de.gpfeifer.no2go.notes
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.gpfeifer.no2go.core,
  lotus.domino
 Export-Package: de.gpfeifer.no2go.notes

@@ -4,7 +4,7 @@ Bundle-Name: Securestore
 Bundle-SymbolicName: de.gpfeifer.no2go.securestore
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.commands.common,
  org.eclipse.equinox.security.storage;version="1.0.0",
  org.eclipse.jface.preference,
