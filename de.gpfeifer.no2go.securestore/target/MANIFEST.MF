@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Export-Package: de.gpfeifer.no2go.securestore
 Eclipse-SourceReferences: scm:git:git@github.com:gpfeifer/no2go.git;pa
- th="de.gpfeifer.no2go.securestore";commitId=d8dc88e5c928654efc15629c8
- fc3c408cb6b1405
+ th="de.gpfeifer.no2go.securestore";commitId=646534b8a0d9c51ee57f675ee
+ bd627967da26c45
 Bundle-ActivationPolicy: lazy
-Bundle-Version: 1.0.0.201304051448
+Bundle-Version: 1.0.0.201304081015
 Bundle-Name: Securestore
 Bundle-ManifestVersion: 2
 Import-Package: org.eclipse.core.commands.common,org.eclipse.equinox.s

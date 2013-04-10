@@ -3,7 +3,6 @@ package de.gpfeifer.no2go.notes;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +90,7 @@ public class NotesProcess {
 		String osgi = System.getProperty("java.class.path");
 		// We assume we are running in osgi
 		File parent = new File(osgi).getParentFile();
-		String[] rtBundles = findBundles(parent, "de.gpfeifer", "org.mnode","commons");
+		String[] rtBundles = findBundles(parent, "de.gpfeifer");
 		if (rtBundles.length != 0) {
 			return getClassPathString(rtBundles);
 		}
@@ -141,8 +140,14 @@ public class NotesProcess {
 				return false;
 			}
 		});
+		String[] result = new String[list.length];
+		int i = 0;
+		for (String string : list) {
+//			result[i++] = "\"" + new File(parent,string).getAbsolutePath() + "\"" ; 
+			result[i++] = new File(parent,string).getAbsolutePath();
+		}
 
-		return list;
+		return result;
 	}
 
 	public void run(String... args) throws Exception {
@@ -167,7 +172,6 @@ public class NotesProcess {
 	
 
 	public static String save(String notesDir, String server, String mail, String pwd, String days, String outFileName) {
-		
 		String errorString = verifyNotesPath(notesDir);
 		if (errorString != null) {
 			return errorString;
@@ -199,6 +203,7 @@ public class NotesProcess {
 	}
 
 	public static String verify(String notesDir, String server, String mail, String pwd) {
+		System.out.println("Verify");
 		File outFile = new File(No2goUtil.getNo2goDir(),"notes.xml");
 		String errorString = save(notesDir,server,mail,pwd,""+30,outFile.getAbsolutePath());
 		outFile.delete();

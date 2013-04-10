@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Notes
 Bundle-SymbolicName: lotus.notes
 Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: lib/Notes.jar
+Bundle-ClassPath: Notes.jar
 Export-Package: Acme,
  Acme.JPM.Encoders,
  com.ibm.sslight,
