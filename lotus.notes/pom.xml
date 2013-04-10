@@ -6,9 +6,9 @@
 
 	<parent>
 		<groupId>de.gpfeifer</groupId>
-		<artifactId>de.gpfeifer.no2go-parent</artifactId>
+		<artifactId>de.gpfeifer.no2go.e4-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../de.gpfeifer.no2go-parent</relativePath>
+		<relativePath>../de.gpfeifer.no2go.e4-parent</relativePath>
 	</parent>
 
 	<groupId>de.gpfeifer</groupId>
