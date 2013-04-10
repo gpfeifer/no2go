@@ -4,7 +4,7 @@ Bundle-Name: Synch
 Bundle-SymbolicName: de.gpfeifer.no2go.synch
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: com.google.gdata.util,
  de.gpfeifer.no2go.core,
  de.gpfeifer.no2go.google,
