@@ -132,9 +132,11 @@ public class No2goSynchImpl implements No2goSynch{
 			SecurePreferenceStore store = SecurePreferenceStore.get();
 			String account = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_ACCOUNT);
 			String pwd = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_PWD);
+			boolean useHTTPS = store.getBoolean(SecurePreferenceStoreConstants.P_GOOGLE_SSL);
 			googleCalendar = new GoogleCalendar();
 			googleCalendar.setGoogleAccountName(account);
 			googleCalendar.setGooglePassword(pwd);
+			googleCalendar.useHTTPS(useHTTPS);
 		}
 		return googleCalendar;
 	}

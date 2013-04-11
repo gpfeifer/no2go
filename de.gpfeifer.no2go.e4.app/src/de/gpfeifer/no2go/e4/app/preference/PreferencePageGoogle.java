@@ -3,6 +3,7 @@ package de.gpfeifer.no2go.e4.app.preference;
 import java.util.Date;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
@@ -52,6 +53,13 @@ public class PreferencePageGoogle extends FieldEditorPreferencePage {
 		pwd.getTextControl( composite ).setEchoChar( '*' );
 		addField(pwd);
 		
+		final BooleanFieldEditor https = new BooleanFieldEditor(
+				SecurePreferenceStoreConstants.P_GOOGLE_SSL, 
+				"Use HTTPS", 
+				BooleanFieldEditor.DEFAULT, 
+				getFieldEditorParent());
+		addField(https);
+		
 		Button verify = new Button(composite, SWT.PUSH);
 		verify.setText("Verify Settings");
 		verify.addSelectionListener(new SelectionAdapter() {
@@ -64,6 +72,7 @@ public class PreferencePageGoogle extends FieldEditorPreferencePage {
 				GoogleCalendar googleCalendar = new GoogleCalendar();
 				googleCalendar.setGoogleAccountName(accountField.getStringValue());
 				googleCalendar.setGooglePassword(pwd.getStringValue());
+				googleCalendar.useHTTPS(https.getBooleanValue());
 				try {
 					googleCalendar.getCalendarEntries(new Date(), 10);
 					MessageDialog.openInformation(getShell(), "Google Settings", "Google Settings are valid." );

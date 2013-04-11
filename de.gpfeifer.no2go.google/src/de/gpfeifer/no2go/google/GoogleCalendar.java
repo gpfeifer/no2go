@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import com.google.gdata.client.ClientLoginAccountType;
 import com.google.gdata.client.calendar.CalendarQuery;
@@ -25,21 +26,21 @@ import de.gpfeifer.no2go.core.No2goUtil;
 
 
 public class GoogleCalendar {
+	private static Logger logger = Logger.getLogger(GoogleCalendar.class.getName());
+	
 
 	private String googleAccountName;
 	private String googlePassword;
 	private CalendarService calendarService;
-	private URL  feedURL;
-	private URL httpFeedURL;
+	private boolean useHTTPS = true;
 	
-	public No2goCalendar getNo2goCalendar(int days) throws IOException, ServiceException {
+	public No2goCalendar getNo2goCalendar(int days, boolean useHTTP) throws IOException, ServiceException {
 		Date now = new Date();
 		List<No2goCalendarEvent> events = getCalendarEvents(now, No2goUtil.createDateOffset(now, days));
 		return new No2goCalendar(events);
 	}
 
-	public List<No2goCalendarEvent> getCalendarEvents(Date start, Date end) throws IOException,
-			ServiceException {
+	public List<No2goCalendarEvent> getCalendarEvents(Date start, Date end) throws IOException, ServiceException {
 
 		List<No2goCalendarEvent> result = new ArrayList<No2goCalendarEvent>();
 		CalendarService cs = getCalendarService();
@@ -52,8 +53,13 @@ public class GoogleCalendar {
 		myQuery.setMaxResults(65535);
 		//myQuery.setStringCustomParameter("singleevents", "false");
 
-		CalendarEventFeed workFeed = (CalendarEventFeed) cs.query(myQuery,
-				CalendarEventFeed.class);
+		CalendarEventFeed workFeed;
+		try {
+			workFeed = (CalendarEventFeed) cs.query(myQuery, CalendarEventFeed.class);
+		} catch (ServiceException e) {
+			logger.severe(e.toXmlErrorMessage());
+			throw e;
+		}
 		
 		List<CalendarEventEntry> entries = workFeed.getEntries();
 		for (CalendarEventEntry entry : entries) {
@@ -66,40 +72,39 @@ public class GoogleCalendar {
 	
 
 	URL getFeedURL() throws MalformedURLException {
-		if (feedURL == null) {
-			String url = "https://www.google.com/calendar/feeds/" + googleAccountName + "/private/full";
-			feedURL = new URL(url);
+		String url = useHTTPS ? "https:" : "http:"; 
+		 url += "//www.google.com/calendar/feeds/" + googleAccountName + "/private/full";
+		try {
+			URL feedURL = new URL(url);
+			return feedURL;
+		} catch (MalformedURLException e) {
+			logger.severe(e.toString());
+			throw e;
 		}
-		return feedURL;
-	}
-	
-	URL getHTTPFeedURL() throws MalformedURLException {
-		if (httpFeedURL == null) {
-			String url = "http://www.google.com/calendar/feeds/" + googleAccountName + "/private/full";
-			httpFeedURL = new URL(url);
-		}
-		return httpFeedURL ;
 	}
 
 
-	public CalendarService getCalendarService() {
+	public CalendarService getCalendarService() throws AuthenticationException {
 
 		if (calendarService == null) {
-			calendarService = new CalendarService("gpfeifer-getgooglecalendar-1");
+			calendarService = new CalendarService("no2go-2");
 			try {
 				calendarService.setUserCredentials(googleAccountName,googlePassword, ClientLoginAccountType.GOOGLE);
 			} catch (AuthenticationException e) {
 				if (e.getCause() instanceof ConnectException) {
+					logger.severe(e.toXmlErrorMessage());
 					try {
 						calendarService.setUserCredentials(googleAccountName,googlePassword);
+						logger.severe("Second try successfull");
 					} catch (AuthenticationException e1) {
-						System.out.println("ERROR: " +  e.getMessage());
-//						e1.printStackTrace();
+						logger.severe(e1.toXmlErrorMessage());
+						throw e1;
 					}
+				} else {
+					logger.severe(e.toXmlErrorMessage());
+					throw e;
 				}
-			} catch (Throwable t) {
-				t.printStackTrace();
-			}
+			} 
 		}
 
 		return calendarService;
@@ -211,6 +216,10 @@ public class GoogleCalendar {
 
 	public List<No2goCalendarEvent> getCalendarEntries(Date now, int days) throws IOException, ServiceException {
 		return getCalendarEvents(now, No2goUtil.createDateOffset(now, days));
+	}
+
+	public void useHTTPS(boolean value) {
+		useHTTPS = value;
 	}
 
 }
