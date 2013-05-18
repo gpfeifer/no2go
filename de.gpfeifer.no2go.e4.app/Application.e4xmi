@@ -25,7 +25,7 @@
   <handlers xmi:id="_jqjuQpkIEeKOE6UVSDVB3g" contributionURI="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.handlers.SynchronizeHandler" command="_jqjuQZkIEeKOE6UVSDVB3g"/>
   <handlers xmi:id="_jqjuRZkIEeKOE6UVSDVB3g" contributionURI="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.handlers.PreferenceHandler" command="_jqjuRJkIEeKOE6UVSDVB3g"/>
   <handlers xmi:id="_jqjuSJkIEeKOE6UVSDVB3g" contributionURI="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.handlers.AboutHandler" command="_jqjuR5kIEeKOE6UVSDVB3g"/>
-  <handlers xmi:id="_KJ9ZEJndEeKtr5y69llrNQ" elementId="" contributionURI="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.handlers.QuitHandler" command="_BKB7kJnbEeKtr5y69llrNQ"/>
+  <handlers xmi:id="_KJ9ZEJndEeKtr5y69llrNQ" elementId="no2go.handler.exit" contributionURI="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.handlers.QuitHandler" command="_BKB7kJnbEeKtr5y69llrNQ"/>
   <bindingTables xmi:id="_jqjHPJkIEeKOE6UVSDVB3g" bindingContext="_jqjHMZkIEeKOE6UVSDVB3g">
     <bindings xmi:id="_jqjuQJkIEeKOE6UVSDVB3g" keySequence="M1+Q"/>
     <bindings xmi:id="_jqjuQ5kIEeKOE6UVSDVB3g" keySequence="M1+O" command="_jqjuQZkIEeKOE6UVSDVB3g"/>

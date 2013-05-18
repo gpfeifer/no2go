@@ -3,6 +3,9 @@ package de.gpfeifer.no2go.e4.app;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.commands.ParameterizedCommand;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.contexts.RunAndTrack;
 import org.eclipse.e4.core.services.events.IEventBroker;
@@ -15,6 +18,8 @@ import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tray;
 import org.eclipse.swt.widgets.TrayItem;
@@ -39,8 +44,10 @@ public class SystemTrayManager  {
 
 
 	private boolean isInitializedithShell = false;
+	private IEclipseContext context;
 
-	public SystemTrayManager(IEventBroker eventBroker) {
+	public SystemTrayManager(IEclipseContext context, IEventBroker eventBroker) {
+		this.context = context;
 		init(eventBroker);
 	}
 
@@ -125,12 +132,32 @@ public class SystemTrayManager  {
 			});
 			// If user double-clicks on the tray icons the application will be
 			// visible again
-			trayItem.addListener(SWT.DefaultSelection, new Listener() {
+			trayItem.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(org.eclipse.swt.widgets.Event event) {
 					if (!shell.isVisible()) {
 						shell.setMinimized(false);
 						shell.setVisible(true);
 					}
+				}
+			});
+			
+			final Menu menu = new Menu (shell, SWT.POP_UP);
+			MenuItem mi = new MenuItem (menu, SWT.PUSH);
+			mi.setText("Exit");
+			mi.addListener (SWT.Selection, new Listener () {
+
+				@Override
+				public void handleEvent(org.eclipse.swt.widgets.Event event) {
+					ECommandService commandService = context.get(ECommandService.class);
+					EHandlerService handlerService = context.get(EHandlerService.class);
+					ParameterizedCommand myCommand = commandService.createCommand("org.eclipse.ui.file.exit",null);
+					handlerService.executeHandler(myCommand);
+				}
+			});
+			
+			trayItem.addListener (SWT.MenuDetect, new Listener () {
+				public void handleEvent (org.eclipse.swt.widgets.Event event) {
+					menu.setVisible (true);
 				}
 			});
 		}

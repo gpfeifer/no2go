@@ -92,6 +92,14 @@ public class No2goWhen {
 		// (I guess because of different time zone)
         return dt.format(d1).equals(dt.format(d2));
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "No2goWhen [isAllDayEvent=" + isAllDayEvent + ", startTime=" + startTime + ", endTime=" + endTime + "]";
+	}
 
 
 }

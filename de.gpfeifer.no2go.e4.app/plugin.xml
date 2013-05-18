@@ -23,6 +23,10 @@
                name="lifeCycleURI"
                value="bundleclass://de.gpfeifer.no2go.e4.app/de.gpfeifer.no2go.e4.app.LifeCycleManager">
          </property>
+         <property
+               name="windowImages"
+               value="icons/no2go_16.gif,icons/no2go_32.gif">
+         </property>
       </product>
    </extension>
 

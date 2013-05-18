@@ -222,7 +222,7 @@ public class NotesCalendar {
 		// The index must start with 1!
 		// It takes me 4 hours to figure it out
 		for (int i = 1; i <= count; i++) {
-			No2goCalendarEvent entry = createCalendarEntry(entries.getNthDocument(i), end);
+			No2goCalendarEvent entry = createCalendarEntry(entries.getNthDocument(i), start, end);
 			if (entry != null) {
 				calendarEntries.add(entry);
 			}
@@ -269,7 +269,7 @@ public class NotesCalendar {
 	}
 
 	@SuppressWarnings("unchecked")
-	private No2goCalendarEvent createCalendarEntry(Document doc, Date end) throws NotesException {
+	private No2goCalendarEvent createCalendarEntry(Document doc, Date start, Date end) throws NotesException {
 		if (doc == null) {
 			return null;
 		}
@@ -354,7 +354,10 @@ public class NotesCalendar {
 			for (int i = 0; i < lnStartDates.size(); i++) {
 
 				DateTime startDate = lnStartDates.get(i);
-				if (startDate.toJavaDate().getTime() < end.getTime()) {
+				if (startDate.toJavaDate().getTime() < end.getTime()
+						&& startDate.toJavaDate().getTime() > start.getTime()
+					
+					) {
 					DateTime endDate = lnEndDates.get(i);
 					cal.getWhenList().add(createWhen(startDate, endDate, isAllDayEvent));
 				}
@@ -364,8 +367,8 @@ public class NotesCalendar {
 			No2goWhen when = new No2goWhen();
 			when.setAllDayEvent(isAllDayEvent);
 			if (!isItemEmpty(lnItem)) {
-				DateTime start = lnItem.getDateTimeValue();
-				when.setStartTime(start.toJavaDate());
+				DateTime startTime = lnItem.getDateTimeValue();
+				when.setStartTime(startTime.toJavaDate());
 			}
 
 			// For To Do tasks, the EndDateTime doesn't exist, but there is an

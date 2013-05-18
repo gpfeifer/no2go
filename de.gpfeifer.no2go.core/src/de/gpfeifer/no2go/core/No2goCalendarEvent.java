@@ -147,7 +147,10 @@ public class No2goCalendarEvent {
 	 */
 	@Override
 	public String toString() {
-		return "No2goCalendarEvent [title=" + title + "]";
+		return "No2goCalendarEvent [title=" + title + ", whenList=" + whenList + "]";
 	}
+
+
+
 
 }
