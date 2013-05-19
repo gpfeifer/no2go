@@ -4,19 +4,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import com.google.gdata.util.ServiceException;
 
-import de.gpfeifer.no2go.core.No2goUtil;
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
+import de.gpfeifer.no2go.core.No2goUtil;
 import de.gpfeifer.no2go.google.GoogleCalendar;
 import de.gpfeifer.no2go.notes.NotesProcess;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;

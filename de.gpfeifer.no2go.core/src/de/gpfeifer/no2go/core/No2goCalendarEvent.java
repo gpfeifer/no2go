@@ -121,13 +121,13 @@ public class No2goCalendarEvent {
 		if (event.getWhenList().size() != 1) {
 			throw new IllegalArgumentException("Event is not normalized");
 		}
-		if (!title.equals(event.getTitle())) {
+		if (!equals(title, event.getTitle())) {
 			return false;
 		}
-		if (!description.equals(event.getDescription())) {
+		if (!equals(description, event.getDescription())) {
 			return false;
 		}
-		if (!location.equals(event.getLocation())) {
+		if (!equals(location, event.getLocation())) {
 			return false;
 		}
 		No2goWhen no2goWhen = event.getWhenList().get(0);
@@ -148,6 +148,34 @@ public class No2goCalendarEvent {
 	@Override
 	public String toString() {
 		return "No2goCalendarEvent [title=" + title + ", whenList=" + whenList + "]";
+	}
+	
+	
+	boolean equals(String s1, String s2) {
+		return normalize(s1).equals(normalize(s2));
+	}
+	/**
+	 * For unknown reasons \t get lost. To compare two strings remove \t, \n \r;
+	 * @param s
+	 * @return
+	 */
+	String normalize(String s) {
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			switch (c) {
+				case '\t':
+				case '\n':
+				case '\r':				
+					
+					break;
+
+				default:
+					result.append(c);
+				break;
+			}
+		}
+		return result.toString();
 	}
 
 
