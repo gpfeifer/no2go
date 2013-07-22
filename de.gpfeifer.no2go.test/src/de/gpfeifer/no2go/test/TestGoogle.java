@@ -3,6 +3,7 @@ package de.gpfeifer.no2go.test;
 import org.junit.Test;
 
 import de.gpfeifer.no2go.google.GoogleCalendar;
+import de.gpfeifer.no2go.google.IGoogleCalendar;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStoreConstants;
 
@@ -13,10 +14,10 @@ public class TestGoogle {
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		String account = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_ACCOUNT);
 		String pwd = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_PWD);
-		GoogleCalendar calendar = new GoogleCalendar();
+		IGoogleCalendar calendar = new GoogleCalendar();
 		calendar.setGoogleAccountName(account);
 		calendar.setGooglePassword(pwd);
-		calendar.saveCalendar(2, "google.xml");
+		calendar.saveCalendar(10, "google.xml");
 	}
 
 

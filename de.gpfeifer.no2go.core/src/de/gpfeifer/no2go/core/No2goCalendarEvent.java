@@ -22,7 +22,9 @@ public class No2goCalendarEvent {
 	@XmlAttribute
 	private String location = "";
 	@XmlAttribute
-	private String eventId = "";
+	private String notesId = "";
+	@XmlAttribute
+	private String googleId = "";
 
 	@XmlElementWrapper(name = "when-list")
 	@XmlElement(name = "when")
@@ -60,17 +62,8 @@ public class No2goCalendarEvent {
 		this.location = trim(location);
 	}
 
-	public void setEventId(String id) {
-		this.eventId = id;
-	}
-	
-	public String getEventId() {
-		return eventId;
-	}
-
-	
 	public boolean isRepeating() {
-		return false;
+		return whenList.size() > 1;
 	}
 	
 	public List<No2goWhen> getWhenList() {
@@ -86,7 +79,8 @@ public class No2goCalendarEvent {
 		No2goCalendarEvent result = new No2goCalendarEvent();
 		result.setTitle(this.getTitle());
 		result.setDescription(this.getDescription());
-		result.setEventId(this.getEventId());
+		result.setNotesId(this.getNotesId());
+		result.setGoogleId(this.getGoogleId());
 		result.setLocation(this.getLocation());
 		ArrayList<No2goWhen> whenListCopy = new ArrayList<No2goWhen>();
 		whenListCopy.addAll(this.getWhenList());
@@ -176,6 +170,42 @@ public class No2goCalendarEvent {
 			}
 		}
 		return result.toString();
+	}
+
+
+
+	/**
+	 * @return the notesId
+	 */
+	public String getNotesId() {
+		return notesId;
+	}
+
+
+
+	/**
+	 * @param notesId the notesId to set
+	 */
+	public void setNotesId(String notesId) {
+		this.notesId = notesId;
+	}
+
+
+
+	/**
+	 * @return the googleId
+	 */
+	public String getGoogleId() {
+		return googleId;
+	}
+
+
+
+	/**
+	 * @param googleId the googleId to set
+	 */
+	public void setGoogleId(String googleId) {
+		this.googleId = googleId;
 	}
 
 

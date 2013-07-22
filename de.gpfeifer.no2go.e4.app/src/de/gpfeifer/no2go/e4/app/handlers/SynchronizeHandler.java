@@ -10,7 +10,7 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import de.gpfeifer.no2go.synch.No2goSynchImpl;
+import de.gpfeifer.no2go.synch.No2goSynchFactory;
 
 public class SynchronizeHandler {
 
@@ -18,7 +18,7 @@ public class SynchronizeHandler {
 	public void execute(IEclipseContext context, @Named(IServiceConstants.ACTIVE_SHELL) Shell shell)
 			throws InvocationTargetException, InterruptedException {
 		try {
-			new No2goSynchImpl().synch();
+			No2goSynchFactory.create().synch();
 			MessageDialog.openInformation(shell, "Info", "Done");
 		} catch (Exception e) {
 			MessageDialog.openError(shell, "Error", e.getMessage());

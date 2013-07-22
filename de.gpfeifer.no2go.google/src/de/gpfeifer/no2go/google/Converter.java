@@ -62,7 +62,7 @@ public class Converter {
 
 	static No2goCalendarEvent createNo2goEvent(CalendarEventEntry event) {
 		No2goCalendarEvent result = new No2goCalendarEvent();
-		result.setEventId(event.getId());
+		result.setGoogleId(event.getId());
 //		String etag = event.getEtag();
 //		String cid = event.getIcalUID();
 //		System.out.println("--");

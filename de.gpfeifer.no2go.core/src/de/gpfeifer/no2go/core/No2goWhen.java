@@ -90,7 +90,11 @@ public class No2goWhen {
 	private boolean equals(Date d1, Date d2) {
 		// d1.equals(d2) does not work 
 		// (I guess because of different time zone)
-        return dt.format(d1).equals(dt.format(d2));
+		long time1 = d1.getTime();
+		long time2 =  d2.getTime();
+		String s1 = dt.format(d1);
+		String s2 = dt.format(d2);
+        return s1.equals(s2);
 	}
 	
 	/* (non-Javadoc)

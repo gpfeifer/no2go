@@ -1,9 +1,7 @@
 package de.gpfeifer.no2go.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBException;
@@ -16,7 +14,7 @@ import de.gpfeifer.no2go.notes.NotesProcess;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStoreConstants;
 import de.gpfeifer.no2go.synch.CalendarDiff;
-import de.gpfeifer.no2go.synch.No2goSynchImpl;
+import de.gpfeifer.no2go.synch.No2goSynchFactory;
 
 public class TestSynch {
 
@@ -26,7 +24,7 @@ public class TestSynch {
 		No2goCalendar notes = No2goCalendar.read("data/notes.xml");
 		No2goCalendar google = No2goCalendar.read("data/google.xml");
 	
-		CalendarDiff diff = new No2goSynchImpl().diff(notes,  google);
+		CalendarDiff diff = No2goSynchFactory.create().diff(notes,  google);
 		new No2goCalendar(diff.insertList).printOn("data/diff.xml");
 		assertEquals(1, diff.insertList.size());
 	}
@@ -53,7 +51,7 @@ public class TestSynch {
 		No2goCalendar notes = No2goCalendar.read("data/notes2.xml");
 		No2goCalendar google = No2goCalendar.read("data/google2.xml");
 	
-		CalendarDiff diff = new No2goSynchImpl().diff(notes,  google);
+		CalendarDiff diff = No2goSynchFactory.create().diff(notes,  google);
 		new No2goCalendar(diff.insertList).printOn("data/diff2.xml");
 
 

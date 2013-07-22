@@ -15,6 +15,7 @@
 		
 		<module>../de.gpfeifer.no2go.core</module>
 		<module>../de.gpfeifer.no2go.google</module>
+		<module>../de.gpfeifer.no2go.google3</module>
 		<module>../de.gpfeifer.no2go.notes</module>
 		<module>../de.gpfeifer.no2go.securestore</module>
 		<module>../de.gpfeifer.no2go.synch</module>

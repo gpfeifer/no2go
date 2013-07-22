@@ -14,25 +14,29 @@ import com.google.gdata.util.ServiceException;
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goUtil;
-import de.gpfeifer.no2go.google.GoogleCalendar;
+import de.gpfeifer.no2go.google.AbstractGoogleCalendar;
+import de.gpfeifer.no2go.google3.GoogleCalendarV3;
 import de.gpfeifer.no2go.notes.NotesProcess;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStoreConstants;
 
 
 
-public class No2goSynchImpl implements No2goSynch{
+class No2goSynchImpl implements No2goSynch{
 	
-	GoogleCalendar googleCalendar;
+	AbstractGoogleCalendar googleCalendar = new GoogleCalendarV3();
 	List<No2goSynchListener> listenerList = Collections.synchronizedList(new ArrayList<No2goSynchListener>());
 
 	public void synch() throws Exception {
+		
+		
+		
 		File no2godir = new File(System.getProperty("user.home"), ".no2go");
 		no2godir.mkdirs();
 
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		int numberOfDays = store.getInt(SecurePreferenceStoreConstants.P_GENERAL_NUMBER_DAYS);
-
+		
 		fireInfo("Reading Notes Calendar");
 		No2goCalendar notesCalendar = getNoteNo2goCalendar(store, no2godir, numberOfDays);
 		int numberOfInserts = 0;
@@ -76,8 +80,8 @@ public class No2goSynchImpl implements No2goSynch{
 		}
 	}
 
-	private void upateGoogle(CalendarDiff diff) throws MalformedURLException, IOException, ServiceException {
-		GoogleCalendar calendar = getGoogleCalendar();
+	private void upateGoogle(CalendarDiff diff) throws Exception {
+		AbstractGoogleCalendar calendar = getGoogleCalendar();
 		
 		for ( No2goCalendarEvent event : diff.insertList) {
 			calendar.insert(event);
@@ -97,8 +101,8 @@ public class No2goSynchImpl implements No2goSynch{
 		
 	}
 
-	private No2goCalendar getGoogleNo2goCalendar(File no2godir, int numberOfDays) throws IOException, ServiceException {
-		GoogleCalendar calendar = getGoogleCalendar();
+	private No2goCalendar getGoogleNo2goCalendar(File no2godir, int numberOfDays) throws Exception {
+		AbstractGoogleCalendar calendar = getGoogleCalendar();
 		List<No2goCalendarEvent> events = calendar.getCalendarEntries(new Date(), numberOfDays);
 		return new No2goCalendar(events);
 	}
@@ -124,17 +128,17 @@ public class No2goSynchImpl implements No2goSynch{
 		}
 	}
 	
-	GoogleCalendar getGoogleCalendar() {
-		if (googleCalendar == null) {
-			SecurePreferenceStore store = SecurePreferenceStore.get();
-			String account = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_ACCOUNT);
-			String pwd = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_PWD);
-			boolean useHTTPS = store.getBoolean(SecurePreferenceStoreConstants.P_GOOGLE_SSL);
-			googleCalendar = new GoogleCalendar();
-			googleCalendar.setGoogleAccountName(account);
-			googleCalendar.setGooglePassword(pwd);
-			googleCalendar.useHTTPS(useHTTPS);
-		}
+	AbstractGoogleCalendar getGoogleCalendar() {
+//		if (googleCalendar == null) {
+//			SecurePreferenceStore store = SecurePreferenceStore.get();
+//			String account = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_ACCOUNT);
+//			String pwd = store.getString(SecurePreferenceStoreConstants.P_GOOGLE_PWD);
+//			boolean useHTTPS = store.getBoolean(SecurePreferenceStoreConstants.P_GOOGLE_SSL);
+//			googleCalendar = new GoogleCalendar();
+//			googleCalendar.setGoogleAccountName(account);
+//			googleCalendar.setGooglePassword(pwd);
+//			googleCalendar.useHTTPS(useHTTPS);
+//		}
 		return googleCalendar;
 	}
 

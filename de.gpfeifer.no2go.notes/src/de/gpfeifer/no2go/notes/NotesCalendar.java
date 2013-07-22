@@ -276,7 +276,7 @@ public class NotesCalendar {
 		No2goCalendarEvent cal = new No2goCalendarEvent();
 		Item lnItem = doc.getFirstItem("ApptUNID");
 		if (!isItemEmpty(lnItem)) {
-			cal.setEventId(lnItem.getText());
+			cal.setNotesId(lnItem.getText());
 		}
 
 		lnItem = doc.getFirstItem("AppointmentType");
@@ -332,6 +332,30 @@ public class NotesCalendar {
 		// cal.setAlarmOffsetMins(Integer.parseInt(lnItem.getText()));
 		// }
 
+//		Item repeatItem = doc.getFirstItem("RepeatUnit");
+//		
+//		if (!isItemEmpty(repeatItem)) {
+//			String text = repeatItem.getText();
+//			System.out.println(text);
+//			Item repeatWeekensItem = doc.getFirstItem("RepeatWeekends");
+//			if (!isItemEmpty(repeatWeekensItem)) {
+//				String text2 = repeatWeekensItem.getText();
+//				System.out.println(text2);
+//			}
+//
+//			
+//			
+//		}
+//		Item startItem = doc.getFirstItem("RepeatStartDate");
+//		if (!isItemEmpty(startItem)) {
+//			
+//			System.out.println(startItem);
+//			Vector itemValueDateTimeArray = doc.getItemValue("RepeatDates");
+//			System.out.println(itemValueDateTimeArray);
+//			doc.
+//		}
+
+		
 		lnItem = doc.getFirstItem("OrgRepeat");
 		// If true, this is a repeating calendar entry
 		if (!isItemEmpty(lnItem)) {

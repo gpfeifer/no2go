@@ -33,7 +33,7 @@ import de.gpfeifer.no2go.core.No2goUtil;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 import de.gpfeifer.no2go.securestore.SecurePreferenceStoreConstants;
 import de.gpfeifer.no2go.synch.No2goSynch;
-import de.gpfeifer.no2go.synch.No2goSynchImpl;
+import de.gpfeifer.no2go.synch.No2goSynchFactory;
 import de.gpfeifer.no2go.synch.No2goSynchListener;
 
 public class InfoPart implements No2goSynchListener {
@@ -86,7 +86,7 @@ public class InfoPart implements No2goSynchListener {
 
 	private Label autoSynchLabel;
 	private Label infoLabel;
-	private No2goSynchImpl synch;
+	private No2goSynch synch;
 	private SynchJob synchJob;
 	private TableViewer tableViewer;
 
@@ -269,7 +269,7 @@ public class InfoPart implements No2goSynchListener {
 				
 			}
 		});
-		synch = new No2goSynchImpl();
+		synch = No2goSynchFactory.create();
 		synch.addListener(this);
 		synchJob = new SynchJob(synch);
 		updateSynchJob();

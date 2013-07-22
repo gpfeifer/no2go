@@ -25,12 +25,10 @@ import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goUtil;
 
 
-public class GoogleCalendar {
+public class GoogleCalendar extends AbstractGoogleCalendar implements IGoogleCalendar {
 	private static Logger logger = Logger.getLogger(GoogleCalendar.class.getName());
 	
 
-	private String googleAccountName;
-	private String googlePassword;
 	private CalendarService calendarService;
 	private boolean useHTTPS = true;
 	
@@ -71,7 +69,7 @@ public class GoogleCalendar {
 	
 	
 
-	URL getFeedURL() throws MalformedURLException {
+	private URL getFeedURL() throws MalformedURLException {
 		String url = useHTTPS ? "https:" : "http:"; 
 		 url += "//www.google.com/calendar/feeds/" + googleAccountName + "/private/full";
 		try {
@@ -84,7 +82,7 @@ public class GoogleCalendar {
 	}
 
 
-	public CalendarService getCalendarService() throws AuthenticationException {
+	private CalendarService getCalendarService() throws AuthenticationException {
 
 		if (calendarService == null) {
 			calendarService = new CalendarService("no2go-2");
@@ -149,7 +147,7 @@ public class GoogleCalendar {
 		return saveCalendar(now, No2goUtil.createDateOffset(now, days), fileName);
 	}
 	
-	public  List<No2goCalendarEvent> saveCalendar(Date start, Date end, String fileName) throws Exception {
+	private  List<No2goCalendarEvent> saveCalendar(Date start, Date end, String fileName) throws Exception {
 		List<No2goCalendarEvent>  entries = getCalendarEvents(start, end);
 		No2goCalendar calendar = new No2goCalendar();
 		for (No2goCalendarEvent calendarEntry : entries) {
@@ -174,7 +172,7 @@ public class GoogleCalendar {
 		getCalendarService().insert(getFeedURL(), googleEntry);
 	}
 
-	public void update(No2goCalendarEvent event) throws MalformedURLException, IOException, ServiceException {
+	private void update(No2goCalendarEvent event) throws MalformedURLException, IOException, ServiceException {
 		CalendarEventEntry googleEntry = Converter.createGoogleEvent(event);
 		getCalendarService().insert(getFeedURL(), googleEntry);
 		URL editUrl = new URL(googleEntry.getEditLink().getHref());
@@ -198,21 +196,7 @@ public class GoogleCalendar {
 //		}
 //	}
 
-	public String getGoogleAccountName() {
-		return googleAccountName;
-	}
 
-	public void setGoogleAccountName(String googleAccountName) {
-		this.googleAccountName = googleAccountName;
-	}
-
-	public String getGooglePassword() {
-		return googlePassword;
-	}
-
-	public void setGooglePassword(String googlePassword) {
-		this.googlePassword = googlePassword;
-	}
 
 	public List<No2goCalendarEvent> getCalendarEntries(Date now, int days) throws IOException, ServiceException {
 		return getCalendarEvents(now, No2goUtil.createDateOffset(now, days));

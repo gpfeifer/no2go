@@ -25,7 +25,7 @@ public class TestNotes {
 
 	}
 
-//	@Test
+	@Test
 	public void testSave() throws Exception {
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		String path = store.getString(SecurePreferenceStoreConstants.P_NOTES_PATH);
@@ -41,7 +41,7 @@ public class TestNotes {
 		new NotesProcess().run("save", server,mail,pwd, "30", "notes.txt");
 	}
 
-	@Test
+//	@Test
 	public void testVerify() throws Exception {
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		String path = store.getString(SecurePreferenceStoreConstants.P_NOTES_PATH);
