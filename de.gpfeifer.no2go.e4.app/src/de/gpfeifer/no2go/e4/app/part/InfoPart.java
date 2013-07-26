@@ -132,20 +132,42 @@ public class InfoPart implements No2goSynchListener {
 						}
 						
 					}});
-//				button.setEnabled(false);
-//				try {
-//					synch.synch();
-//				} catch (Exception e1) {
-//					MessageDialog.openError(parent.getShell(), "Error", e1.getMessage());
-//				}
-//				button.setEnabled(true);
 			}
-
 		});
 		
 		infoLabel = new Label(parent, SWT.NONE);
 		infoLabel.setText("");
 		infoLabel.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+		
+		final Button delButton = new Button(parent, SWT.PUSH);
+		delButton.setText("Delete Google Events");
+		delButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ProgressDialog dialog = new ProgressDialog();
+				dialog.open(parent.getShell(), new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							int number = synch.delete();
+//							fireInfo("");
+						} catch (final Exception e) {
+							// TODO Auto-generated catch block
+							Display.getDefault().asyncExec(
+								new Runnable() {
+									@Override
+									public void run() {
+										MessageDialog.openError(parent.getShell(), "Error", e.getMessage());										
+									}
+								});	
+
+						}
+						
+					}});
+			}
+		});
+
 		parent.layout();
 	}
 

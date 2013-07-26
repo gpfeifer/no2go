@@ -22,7 +22,7 @@ public class No2goPreferenceDialog {
 	
 		mgr.addToRoot(new PreferenceNode("general", new PreferencePageGeneral()));
 		mgr.addToRoot(new PreferenceNode("notes", new PreferencePageNotes()));
-		mgr.addToRoot(new PreferenceNode("google", new PreferencePageGoogle()));
+//		mgr.addToRoot(new PreferenceNode("google", new PreferencePageGoogle()));
 		mgr.addToRoot(new PreferenceNode("google3", new PreferencePageGoogle3()));
 
 		PreferenceDialog dlg = new PreferenceDialog(shell, mgr);

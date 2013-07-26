@@ -1,22 +1,17 @@
 package de.gpfeifer.no2go.synch;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.google.api.services.calendar.model.Event;
-import com.google.gdata.util.ServiceException;
 
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goUtil;
-import de.gpfeifer.no2go.core.No2goWhen;
-import de.gpfeifer.no2go.google.AbstractGoogleCalendar;
 import de.gpfeifer.no2go.google3.GoogleCalendarV3;
 import de.gpfeifer.no2go.google3.GoogleConverter;
 import de.gpfeifer.no2go.notes.NotesProcess;
@@ -54,9 +49,14 @@ class No2goSynchV3 implements No2goSynch{
 			List<No2goCalendarEvent> notesEvents = notesCalendar.getCalendarEvents();
 			for (No2goCalendarEvent notesEvent : notesEvents) {
 				if (notesEvent.isRepeating()) {
+					fireInfo("Repeating: " + notesEvent.getTitle());
 					deleteAndRemove(googleCalendar, googleEvents, notesEvent.getNotesId());
 					List<Event> googleEventsForRepeating = GoogleConverter.convertRepeatingEvent(notesEvent);
+					int n  = 1;
+					int size = googleEventsForRepeating.size();
 					for (Event event : googleEventsForRepeating) {
+						fireInfo("Repeating: (" + n + "/" + size + ")" +  notesEvent.getTitle());
+						n++;
 						googleCalendar.insert(event);
 					}
 					numberOfRepeating++;
@@ -65,6 +65,7 @@ class No2goSynchV3 implements No2goSynch{
 					if (googleEvent != null) {
 						numberOfUpdates += update(googleCalendar, googleEvent, notesEvent);
 					} else {
+						fireInfo("Insert " + notesEvent.getTitle());
 						googleCalendar.insert(notesEvent);
 						numberOfInserts++;
 					}
@@ -103,6 +104,7 @@ class No2goSynchV3 implements No2goSynch{
 	private int update(GoogleCalendarV3 googleCalendar, Event googleEvent, No2goCalendarEvent notesEvent) throws Exception {
 		int number = 0; 
 		if (update(googleEvent,notesEvent)) {
+			fireInfo("Update " + notesEvent.getTitle());
 			googleCalendar.update(googleEvent);
 			number++;
 		}
@@ -197,5 +199,31 @@ class No2goSynchV3 implements No2goSynch{
 		listenerList.remove(listener);
 		
 	}
+
+
+
+	@Override
+	public int delete() throws Exception {
+
+		SecurePreferenceStore store = SecurePreferenceStore.get();
+		int numberOfDays = store.getInt(SecurePreferenceStoreConstants.P_GENERAL_NUMBER_DAYS);
+
+		GoogleCalendarV3 googleCalendar = new GoogleCalendarV3();
+		List<Event> googleEvents = googleCalendar.getEventsWithNotesId(numberOfDays);
+		int total = googleEvents.size();
+		int number = googleEvents.size();
+		int i = 1;
+		for (Event event : googleEvents) {
+			fireInfo("Delete " + i + "/" + total + " "+ event.getSummary());
+			i++;
+			googleCalendar.delete(event);
+		}
+
+		fireInfo("Number deleted: " + number);
+
+		return number;
+	}
+
+
 
 }

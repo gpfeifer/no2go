@@ -153,4 +153,10 @@ class No2goSynchImpl implements No2goSynch{
 		
 	}
 
+	@Override
+	public int delete() throws Exception {
+		return 0;
+		
+	}
+
 }

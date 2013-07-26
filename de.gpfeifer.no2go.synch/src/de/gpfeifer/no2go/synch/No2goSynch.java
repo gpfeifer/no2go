@@ -11,5 +11,7 @@ public interface No2goSynch {
 	void removeListener(No2goSynchListener listener);
 
 	CalendarDiff diff(No2goCalendar notes, No2goCalendar google);
+
+	int delete() throws Exception;
 	
 }
