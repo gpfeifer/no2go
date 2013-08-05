@@ -7,11 +7,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.api.services.calendar.model.Event;
 
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goUtil;
+import de.gpfeifer.no2go.google3.GoogleCalendarListener;
 import de.gpfeifer.no2go.google3.GoogleCalendarV3;
 import de.gpfeifer.no2go.google3.GoogleConverter;
 import de.gpfeifer.no2go.notes.NotesProcess;
@@ -20,7 +24,8 @@ import de.gpfeifer.no2go.securestore.SecurePreferenceStoreConstants;
 
 
 
-class No2goSynchV3 implements No2goSynch{
+class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
+	static private Logger logger = LoggerFactory.getLogger(No2goSynchV3.class);
 	
 	List<No2goSynchListener> listenerList = Collections.synchronizedList(new ArrayList<No2goSynchListener>());
 
@@ -34,7 +39,7 @@ class No2goSynchV3 implements No2goSynch{
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		int numberOfDays = store.getInt(SecurePreferenceStoreConstants.P_GENERAL_NUMBER_DAYS);
 		
-		
+
 		fireInfo("Reading Notes Calendar");
 		No2goCalendar notesCalendar = getLotusNotesNo2goCalendar(store, no2godir, numberOfDays);
 		int numberOfInserts = 0;
@@ -45,6 +50,7 @@ class No2goSynchV3 implements No2goSynch{
 		if (!notesCalendar.getCalendarEvents().isEmpty()) {
 			fireInfo("Reading Google Calendar");
 			GoogleCalendarV3 googleCalendar = new GoogleCalendarV3();
+			googleCalendar.setListener(this);
 			List<Event> googleEvents = googleCalendar.getEventsWithNotesId(numberOfDays);
 			List<No2goCalendarEvent> notesEvents = notesCalendar.getCalendarEvents();
 			for (No2goCalendarEvent notesEvent : notesEvents) {
@@ -155,6 +161,7 @@ class No2goSynchV3 implements No2goSynch{
 
 
 	private void fireInfo(String info) {
+		logger.info(info);
 		for (No2goSynchListener listener : listenerList) {
 			listener.info(info);
 		}
@@ -222,6 +229,14 @@ class No2goSynchV3 implements No2goSynch{
 		fireInfo("Number deleted: " + number);
 
 		return number;
+	}
+
+
+
+	@Override
+	public void info(String string) {
+		fireInfo(string);
+		
 	}
 
 

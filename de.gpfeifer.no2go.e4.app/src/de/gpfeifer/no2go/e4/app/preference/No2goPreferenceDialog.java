@@ -5,6 +5,7 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.internal.net.ProxyPreferencePage;
 
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 
@@ -24,6 +25,7 @@ public class No2goPreferenceDialog {
 		mgr.addToRoot(new PreferenceNode("notes", new PreferencePageNotes()));
 //		mgr.addToRoot(new PreferenceNode("google", new PreferencePageGoogle()));
 		mgr.addToRoot(new PreferenceNode("google3", new PreferencePageGoogle3()));
+		mgr.addToRoot(new PreferenceNode("network", new PreferencePageProxy()));
 
 		PreferenceDialog dlg = new PreferenceDialog(shell, mgr);
 

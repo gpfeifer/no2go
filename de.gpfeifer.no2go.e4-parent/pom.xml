@@ -12,7 +12,7 @@
 		<module>../de.gpfeifer.no2go.e4.app</module>
 		<module>../de.gpfeifer.no2go.e4.feature</module>
 		<module>../de.gpfeifer.no2go.e4.product</module>
-		
+		<module>../de.gpfeifer.no2go.log</module>
 		<module>../de.gpfeifer.no2go.core</module>
 		<module>../de.gpfeifer.no2go.google</module>
 		<module>../de.gpfeifer.no2go.google3</module>

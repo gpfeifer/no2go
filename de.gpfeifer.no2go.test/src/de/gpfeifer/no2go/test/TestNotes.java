@@ -38,7 +38,7 @@ public class TestNotes {
 		
 		String errorString = NotesProcess.verifyNotesPath(path);
 		assertNull(errorString);
-		new NotesProcess().run("save", server,mail,pwd, "30", "notes.txt");
+		new NotesProcess().run("save", server,mail,pwd, "3", "notes.txt");
 	}
 
 //	@Test

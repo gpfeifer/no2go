@@ -8,10 +8,13 @@ import org.osgi.framework.ServiceReference;
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
+	private static Activator instance;
 
 	static BundleContext getContext() {
 		return context;
 	}
+
+	private IProxyService proxyService;
 
 	/*
 	 * (non-Javadoc)
@@ -19,10 +22,11 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		instance = this;
 		// Force activation of IProxyService
 		ServiceReference<IProxyService> serviceReference = bundleContext.getServiceReference(IProxyService.class);
 		if (serviceReference != null) {
-			bundleContext.getService(serviceReference);
+			proxyService = bundleContext.getService(serviceReference);
 		}
 	}
 
@@ -32,6 +36,13 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+	}
+
+	/**
+	 * @return the proxyService
+	 */
+	public IProxyService getProxyService() {
+		return proxyService;
 	}
 
 }

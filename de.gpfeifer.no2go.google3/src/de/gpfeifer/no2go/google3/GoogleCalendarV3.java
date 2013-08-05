@@ -6,9 +6,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
@@ -31,8 +33,11 @@ import de.gpfeifer.no2go.google.IGoogleCalendar;
  */
 public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleCalendar {
 
+	private static Logger logger = LoggerFactory.getLogger(GoogleCalendarV3.class);
+	
 	private Calendar calendar;
 	private Credential credential;
+	private GoogleCalendarListener listener;
 
 	public No2goCalendar getNo2goCalendar(int days) throws IOException, ServiceException {
 		Date now = new Date();
@@ -92,15 +97,15 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		eventList.setTimeMax(new DateTime(end, TimeZone.getDefault()));
 		List<Event> result = new ArrayList<Event>();
 		String pageToken = null;
-//		System.out.println("Start");
+		logger.debug("End getGoogleEvents");
 		do {
 			Events events = eventList.setPageToken(pageToken).execute();
 			List<Event> items = events.getItems();
-//			System.out.println("Read " + items.size());
+			logger.debug("Read " + items.size());
 			result.addAll(items);
 			pageToken = events.getNextPageToken();
 		} while (pageToken != null);
-//		System.out.println("Stop " + result.size());
+		logger.debug("End getGoogleEvents");
 		return result;
 	}
 
@@ -164,14 +169,9 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		return result;
 	}
 
-	Calendar getGoogleCalendar() {
+	public Calendar getGoogleCalendar() {
 		if (calendar == null) {
 			initCalendar();
-		}
-		if (credential != null) {
-			if (credential.getExpiresInSeconds() < (5 * 60)) {
-				initCalendar();
-			}
 		}
 
 		return calendar;
@@ -181,24 +181,33 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		credential = null;
 		calendar = null;
 		try {
+			info("Get Credential");
+			logger.debug("get credential");
 			credential = CredentialProvider.INSTANCE.getCredential();
 		} catch (IOException e) {
+			logger.warn(e.toString());
 		}
+		
 		if (credential != null) {
-			final HttpTransport httpTransport = new NetHttpTransport.Builder().build();
+			HttpTransport httpTransport = Activator.getInstance().getHttpTransport(); 
 			final JsonFactory jsonFactory = new JacksonFactory();
-
+			info("Get Google service");
+			logger.debug("Get Google Calendar service");
 			calendar = new Calendar.Builder(httpTransport, jsonFactory, credential).setApplicationName("no2go").build();
+			logger.debug("Google Calendar service: " + calendar.toString());
+		} else {
+			throw new RuntimeException("No credential");
 		}
 	}
 
-	public void insert(No2goCalendarEvent no2goEvent) throws IOException {
-		if (no2goEvent.isRepeating()) {
-			System.out.println("Not instert: " + no2goEvent);
-			return;
+	private void info(String string) {
+		if (listener != null) {
+			listener.info(string);
 		}
-		insert(GoogleConverter.createEvent(no2goEvent));
+		
 	}
+
+
 
 	public void insert(Event event) throws IOException {
 		Calendar calendar = getGoogleCalendar();
@@ -235,6 +244,21 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 
 		com.google.api.services.calendar.model.Calendar cal = calendar.calendars().get("primary").execute();
 		calendar.events().delete(cal.getId(), event.getId()).execute();
+	}
+
+	/**
+	 * @param listener the listener to set
+	 */
+	public void setListener(GoogleCalendarListener listener) {
+		this.listener = listener;
+	}
+
+	public void insert(No2goCalendarEvent no2goEvent) throws IOException {
+		if (no2goEvent.isRepeating()) {
+			System.out.println("Not instert: " + no2goEvent);
+			return;
+		}
+		insert(GoogleConverter.createEvent(no2goEvent));
 	}
 
 }

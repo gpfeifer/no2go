@@ -27,6 +27,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
 
 /**
@@ -34,6 +37,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiv
  * 
  */
 public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
+	private static Logger logger = LoggerFactory.getLogger(LocalVerificationCodeReceiver.class);
 	private static final String CALLBACK_PATH = "/Callback";
 	/** Verification code or {@code null} for none. */
 	String code;
@@ -54,6 +58,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 		void runServer() throws NumberFormatException, IOException {
 
 			try {
+				logger.debug("runServer");
 				lock.lock();
 				Socket socket = serverSocket.accept();
 				InputStream is = socket.getInputStream();
@@ -67,6 +72,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 				while ((line = in.readLine()) != null && !line.isEmpty()) {
 					// System.out.println(line);
 				}
+				logger.debug("write landing html");
 				String html = getLandingHtml();
 				PrintWriter out = new PrintWriter(os);
 				out.println("HTTP/1.1 200");
@@ -189,6 +195,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 		thread.start();
 		String uri = "http://localhost:" + port + CALLBACK_PATH;
 		provider.redirectUri(consumer, uri);
+		logger.debug("getRedirectUri " + uri);
 		return uri;
 	}
 
@@ -201,6 +208,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 	 */
 	@Override
 	public String waitForCode() throws IOException {
+		logger.debug("waitForCode");
 		isWaiting = true;
 		provider.waitForCode(consumer);
 		lock.lock();
@@ -211,6 +219,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 			if (error != null) {
 				throw new IOException("User authorization failed (" + error + ")");
 			}
+			logger.debug("code received: " + code);
 			return code;
 		} catch (InterruptedException e) {
 			throw new IOException("Interrupted");
@@ -230,6 +239,7 @@ public class LocalVerificationCodeReceiver implements VerificationCodeReceiver {
 	 */
 	@Override
 	public void stop() throws IOException {
+		logger.debug("stop");
 		if (serverSocket != null) {
 			try {
 				serverSocket.close();

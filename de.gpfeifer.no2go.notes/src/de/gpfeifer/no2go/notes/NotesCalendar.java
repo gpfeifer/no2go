@@ -376,15 +376,21 @@ public class NotesCalendar {
 			}
 
 			for (int i = 0; i < lnStartDates.size(); i++) {
-
 				DateTime startDate = lnStartDates.get(i);
-				if (startDate.toJavaDate().getTime() < end.getTime()
-						&& startDate.toJavaDate().getTime() > start.getTime()
-					
-					) {
+				Date javaStartDate = startDate.toJavaDate();
+				if (javaStartDate.compareTo(start) >= 0 && javaStartDate.compareTo(end) <= 0) {
 					DateTime endDate = lnEndDates.get(i);
 					cal.getWhenList().add(createWhen(startDate, endDate, isAllDayEvent));
+					
 				}
+
+//				if (startDate.toJavaDate().getTime() < end.getTime()
+//						&& startDate.toJavaDate().getTime() > start.getTime()
+//					
+//					) {
+//					DateTime endDate = lnEndDates.get(i);
+//					cal.getWhenList().add(createWhen(startDate, endDate, isAllDayEvent));
+//				}
 			}
 		} else {
 			lnItem = doc.getFirstItem("StartDateTime");
@@ -407,10 +413,10 @@ public class NotesCalendar {
 			cal.getWhenList().add(when);
 		}
 
-		// System.out.println("--");
-		// System.out.println(CalendarUtil.createVEvent(cal));
-		// System.out.println("--");
-
+		if (cal.getWhenList().size() < 1) {
+			// If a repeating event has no entry between start and end the whenList is empty
+			return null;
+		}
 		return cal;
 	}
 
