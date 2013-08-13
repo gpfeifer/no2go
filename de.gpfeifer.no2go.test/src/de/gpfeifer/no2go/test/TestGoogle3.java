@@ -15,7 +15,7 @@ import com.google.gdata.util.ServiceException;
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.google3.GoogleCalendarV3;
-import de.gpfeifer.no2go.google3.GoogleConverter;
+import de.gpfeifer.no2go.google3.GoogleUtil;
 
 public class TestGoogle3 {
 
@@ -67,7 +67,7 @@ public class TestGoogle3 {
 		event.setStart(new EventDateTime().setDateTime(start));
 		DateTime end = new DateTime(endDate, TimeZone.getTimeZone("UTC"));
 		event.setEnd(new EventDateTime().setDateTime(end));
-		GoogleConverter.setNodesId(event, "notesid");
+		GoogleUtil.setNodesId(event, "notesid");
 		return event;
 	}
 }

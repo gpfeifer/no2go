@@ -62,7 +62,8 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		List<Event> events = getGoogleEvents(start, end);
 
 		for (Event event : events) {
-			if (GoogleConverter.getNodesId(event) != null) {
+			if (GoogleUtil.getNodesId(event) != null) {
+//				GoogleUtil.i
 				result.add(event);
 			}
 		}
@@ -164,8 +165,8 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		result.setTitle(event.getSummary());
 		result.setDescription(event.getDescription());
 		result.setLocation(event.getLocation());
-		result.setWhenList(GoogleConverter.getWhenList(event));
-		result.setNotesId(GoogleConverter.getNodesId(event));
+		result.setWhenList(GoogleUtil.getWhenList(event));
+		result.setNotesId(GoogleUtil.getNodesId(event));
 		return result;
 	}
 
@@ -253,12 +254,5 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		this.listener = listener;
 	}
 
-	public void insert(No2goCalendarEvent no2goEvent) throws IOException {
-		if (no2goEvent.isRepeating()) {
-			System.out.println("Not instert: " + no2goEvent);
-			return;
-		}
-		insert(GoogleConverter.createEvent(no2goEvent));
-	}
 
 }

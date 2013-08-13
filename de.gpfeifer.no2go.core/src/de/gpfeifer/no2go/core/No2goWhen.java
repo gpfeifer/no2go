@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class No2goWhen {
 
 	static final SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	static final SimpleDateFormat dtAllDay = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@XmlAttribute
 	private boolean isAllDayEvent;
@@ -68,32 +69,41 @@ public class No2goWhen {
 			return false;
 		}
 		No2goWhen other = (No2goWhen) obj;
+		if (isAllDayEvent != other.isAllDayEvent) {
+			return false;
+		}
+
 		if (endTime == null) {
 			if (other.endTime != null) {
 				return false;
 			}
-		} else if (!equals(endTime, other.endTime)) {
-			return false;
-		}
-		if (isAllDayEvent != other.isAllDayEvent) {
+		} else if (!equals(isAllDayEvent, endTime, other.endTime)) {
 			return false;
 		}
 		if (startTime == null) {
 			if (other.startTime != null) {
 				return false;
 			}
-		} else if (!equals(startTime, other.startTime)) {
+		} else if (!equals(isAllDayEvent, startTime, other.startTime)) {
 			return false;
 		}
 		return true;
 	}
-	private boolean equals(Date d1, Date d2) {
+	private boolean equals(boolean allDay, Date d1, Date d2) {
 		// d1.equals(d2) does not work 
 		// (I guess because of different time zone)
-		long time1 = d1.getTime();
-		long time2 =  d2.getTime();
-		String s1 = dt.format(d1);
-		String s2 = dt.format(d2);
+//		long time1 = d1.getTime();
+//		long time2 =  d2.getTime();
+		String s1;
+		String s2;
+
+		if (allDay) {
+			s1 = dtAllDay.format(d1);
+			s2 = dtAllDay.format(d2);
+		} else {
+			s1 = dt.format(d1);
+			s2 = dt.format(d2);
+		}
         return s1.equals(s2);
 	}
 	

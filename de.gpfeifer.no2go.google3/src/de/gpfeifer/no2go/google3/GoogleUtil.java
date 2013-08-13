@@ -15,10 +15,22 @@ import com.google.api.services.calendar.model.EventDateTime;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goWhen;
 
-public class GoogleConverter {
+public class GoogleUtil {
 
 	private static final String LOTUS_NOTES_ID = "lotus-notes-id";
 	
+	public static boolean isPastEvent(Event event) {
+		Date now = new Date();
+		long nowTimeRaw = now.getTime();
+//		long nowTime = nowTimeRaw + Calendar.getInstance().getTimeZone().getOffset(nowTimeRaw); 
+		long endTime = GoogleUtil.getTime(event.getEnd());
+		return nowTimeRaw > endTime;
+	}
+
+	public static boolean isAllDayEvent(Event event) {
+		return event.getStart().getDateTime() == null;
+	}
+
 	public static boolean updateTitle(Event ge, No2goCalendarEvent ne) {
 		if (equals(ge.getSummary(), ne.getTitle())) {
 			return false;
@@ -100,11 +112,18 @@ public class GoogleConverter {
 	}
 
 	
-	static boolean equals(String googleString, String notesString) {
-		if (googleString == null) {
-			return false;
+	static boolean equals(String s1, String s2) {
+		if (s1 == null && s2 == null) {
+			return true;
 		}
-		return normalize(googleString).equals(normalize(notesString));
+		if (s1 == null && s2.trim().equals("")) {
+			return true;
+		}
+		if (s2 == null && s1.trim().equals("")) {
+			return true;
+		}
+
+		return normalize(s1).equals(normalize(s2));
 	}
 
 
@@ -143,6 +162,7 @@ public class GoogleConverter {
 		return map.get(LOTUS_NOTES_ID);
 	}
 
+	
 	public static Event createEvent(No2goCalendarEvent ne) {
 		Event ge = createBaseEvent(ne);
 		setWhen(ge,ne.getWhenList());
@@ -173,15 +193,19 @@ public class GoogleConverter {
 			start.setDate(getDate(when.getStartTime()));
 			end.setDate(getDate(when.getEndTime()));
 		} else {
-			start.setDateTime(getDate(when.getStartTime()));
-			end.setDateTime(getDate(when.getEndTime()));
+			start.setDateTime(getDateTime(when.getStartTime()));
+			end.setDateTime(getDateTime(when.getEndTime()));
 		}
 		ge.setStart(start);
 		ge.setEnd(end);
 	}
 
 	private static DateTime getDate(Date startTime) {
-		
+		long time = startTime.getTime();
+		return new DateTime(true, time, TimeZone.getDefault().getOffset(time));
+	}
+
+	private static DateTime getDateTime(Date startTime) {
 		return new DateTime(startTime,TimeZone.getDefault());
 	}
 
@@ -200,5 +224,23 @@ public class GoogleConverter {
 		}
 		return result;
 	}
+
+	public static long getTime(EventDateTime eventDateTime) {
+		DateTime dateTime = eventDateTime.getDateTime();
+		if (dateTime != null) {
+			return dateTime.getValue() + dateTime.getTimeZoneShift();
+		}
+		DateTime date = eventDateTime.getDate();
+		if (date != null) {
+			return date.getValue() + date.getTimeZoneShift();
+		}
+		return 0;
+	}
+	
+	public static Date toJavaDate(EventDateTime eventDateTime) {
+		long time = getTime(eventDateTime);
+		return new Date(time);
+	}
+
 
 }

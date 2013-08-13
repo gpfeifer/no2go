@@ -409,8 +409,10 @@ public class NotesCalendar {
 			}
 			if (!isItemEmpty(lnItem)) {
 				when.setEndTime(lnItem.getDateTimeValue().toJavaDate());
+				if (!when.getEndTime().before(new Date())) {
+					cal.getWhenList().add(when);
+				}
 			}
-			cal.getWhenList().add(when);
 		}
 
 		if (cal.getWhenList().size() < 1) {

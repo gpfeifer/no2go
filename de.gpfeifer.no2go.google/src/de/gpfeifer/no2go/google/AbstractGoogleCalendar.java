@@ -31,7 +31,7 @@ public abstract class AbstractGoogleCalendar implements IGoogleCalendar {
 		this.googlePassword = googlePassword;
 	}
 
-	abstract public void insert(No2goCalendarEvent event) throws Exception;
+//	abstract public void insert(No2goCalendarEvent event) throws Exception;
 	
 	public List<No2goCalendarEvent> getCalendarEntries(Date now, int days) throws Exception {
 		return getCalendarEvents(now, No2goUtil.createDateOffset(now, days));

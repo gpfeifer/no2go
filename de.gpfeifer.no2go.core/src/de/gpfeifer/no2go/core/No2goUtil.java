@@ -2,6 +2,7 @@ package de.gpfeifer.no2go.core;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -22,9 +23,10 @@ public class No2goUtil {
 		return no2goDir;
 	}
 	public static java.util.Date createDateOffset(java.util.Date date, int days) {
-		long v = date.getTime();
-		long r = v + ((long) days  * 24l * 60l * 60l * 1000l);
-		return new java.util.Date(r);
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
 	}
 	
 	public static String printDate(Date date, boolean printSeconds) {

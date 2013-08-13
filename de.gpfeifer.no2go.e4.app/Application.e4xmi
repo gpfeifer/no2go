@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_jqjHMJkIEeKOE6UVSDVB3g" elementId="org.eclipse.e4.ide.application" bindingContexts="_jqjHMZkIEeKOE6UVSDVB3g">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_jqjuSpkIEeKOE6UVSDVB3g" elementId="de.gpfeifer.no2go.e4.app.MainWindow" label="No2Go" iconURI="platform:/plugin/de.gpfeifer.no2go.e4.app/icons/no2go_32.gif" width="500" height="400">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_jqjuSpkIEeKOE6UVSDVB3g" elementId="de.gpfeifer.no2go.e4.app.MainWindow" label="No2Go" iconURI="platform:/plugin/de.gpfeifer.no2go.e4.app/icons/no2go_32.gif" width="1000" height="400">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_jqjuUpkIEeKOE6UVSDVB3g">
       <children xsi:type="advanced:Perspective" xmi:id="_jqjuU5kIEeKOE6UVSDVB3g">
         <children xsi:type="basic:PartSashContainer" xmi:id="_jqjuVJkIEeKOE6UVSDVB3g" selectedElement="_jqjuVZkIEeKOE6UVSDVB3g">
