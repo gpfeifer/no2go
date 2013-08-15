@@ -89,19 +89,6 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 
 
-	private void synchRepeating(No2goCalendarEvent notesEvent, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException {
-		fireInfo("Repeating: " + notesEvent.getTitle());
-		deleteAndRemove(googleCalendar, googleEvents, notesEvent.getNotesId());
-		List<Event> googleEventsForRepeating = GoogleUtil.convertRepeatingEvent(notesEvent);
-		int n  = 1;
-		int size = googleEventsForRepeating.size();
-		for (Event event : googleEventsForRepeating) {
-			fireInfo("Repeating: (" + n + "/" + size + ")" +  notesEvent.getTitle());
-			n++;
-			googleCalendar.insert(event);
-		}
-	}
-	
 	private void synchRepeating2(No2goCalendarEvent notesEvent, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException {
 		fireInfo("Repeating: " + notesEvent.getTitle());
 		List<Event> existingGoogleEvents = removeRepeating(googleEvents, notesEvent.getNotesId());
@@ -144,14 +131,15 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 		if (!equals(e1.getLocation(),e2.getLocation())) {
 			return false;
 		}
-		
 		if (!equals(e1.getStart(),e2.getStart())) {
 			return false;
 		}
 		if (!equals(e1.getEnd(),e2.getEnd())) {
 			return false;
 		}
-
+		if (!GoogleUtil.equalsAttendees(e1.getAttendees(), e2.getAttendees())) {
+			return false;
+		}
 		return true;
 	}
 
@@ -259,6 +247,10 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 		if (GoogleUtil.updateDescription(googleEvent, notesEvent)) {
 			update = true;
 		}
+		if (GoogleUtil.updateAttendees(googleEvent, notesEvent)) {
+			update = true;
+		}
+
 		if (GoogleUtil.updateNoRepeatingWhen(googleEvent, notesEvent)) {
 			update = true;
 			

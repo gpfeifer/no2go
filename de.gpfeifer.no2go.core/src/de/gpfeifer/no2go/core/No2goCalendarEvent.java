@@ -29,6 +29,11 @@ public class No2goCalendarEvent {
 	@XmlElementWrapper(name = "when-list")
 	@XmlElement(name = "when")
 	private List<No2goWhen> whenList = new ArrayList<No2goWhen>();
+	
+	@XmlElementWrapper(name = "attendee-list")
+	@XmlElement(name = "attendee")
+
+	private List<No2goAttendee> attendees = new ArrayList<No2goAttendee>();
 
 	public No2goCalendarEvent() {
 	}
@@ -206,6 +211,24 @@ public class No2goCalendarEvent {
 	 */
 	public void setGoogleId(String googleId) {
 		this.googleId = googleId;
+	}
+
+
+
+	/**
+	 * @return the attendees
+	 */
+	public List<No2goAttendee> getAttendees() {
+		return attendees;
+	}
+
+
+
+	/**
+	 * @param attendees the attendees to set
+	 */
+	public void setAttendees(List<No2goAttendee> attendees) {
+		this.attendees = attendees;
 	}
 
 

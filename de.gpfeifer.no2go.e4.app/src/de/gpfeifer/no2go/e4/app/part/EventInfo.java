@@ -61,7 +61,7 @@ public class EventInfo {
 		Collections.sort(list, new Comparator<Event>() {
 			@Override
 			public int compare(Event o1, Event o2) {
-				return Long.compare(GoogleUtil.getTime(o1.getStart()), GoogleUtil.getTime(o2.getStart()));
+				return (int) (GoogleUtil.getTime(o1.getStart()) - GoogleUtil.getTime(o2.getStart()));
 			}
 		});
 		return list;

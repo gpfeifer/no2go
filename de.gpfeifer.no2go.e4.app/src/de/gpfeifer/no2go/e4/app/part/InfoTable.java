@@ -118,7 +118,7 @@ public class InfoTable implements No2goSynchListener {
 				public int compare(EventInfo e1, EventInfo e2) {
 					EventDateTime e1Start = e1.getEvents().get(0).getStart();
 					EventDateTime e2Start = e2.getEvents().get(0).getStart();
-					return Long.compare(GoogleUtil.getTime(e1Start), GoogleUtil.getTime(e2Start));
+					return (int)(GoogleUtil.getTime(e1Start) - GoogleUtil.getTime(e2Start));
 				}
 			});
 			return list.toArray();

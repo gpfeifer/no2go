@@ -16,6 +16,7 @@ import java.util.Vector;
 
 import lotus.domino.Database;
 import lotus.domino.DateTime;
+import lotus.domino.Directory;
 import lotus.domino.Document;
 import lotus.domino.DocumentCollection;
 import lotus.domino.Item;
@@ -23,6 +24,7 @@ import lotus.domino.NotesException;
 import lotus.domino.NotesFactory;
 import lotus.domino.NotesThread;
 import lotus.domino.Session;
+import de.gpfeifer.no2go.core.No2goAttendee;
 import de.gpfeifer.no2go.core.No2goCalendar;
 import de.gpfeifer.no2go.core.No2goCalendarEvent;
 import de.gpfeifer.no2go.core.No2goUtil;
@@ -67,9 +69,11 @@ public class NotesCalendar {
 	private String mailfile;
 	private String password;
 	private String server;
+	
 
 	String notesVersion;
 
+	EmailValidator emailValidator = new EmailValidator(); 
 	public NotesCalendar() {
 		notesVersion = "unknown";
 	}
@@ -200,8 +204,9 @@ public class NotesCalendar {
 
 		try {
 			NotesThread.sinitThread();
-			Database db = getDatabase();
-			return getCalendarEntries(db, start, end);
+			Session session = getNotesSession();
+			Database db = getDatabase(session);
+			return getCalendarEntries(session, db, start, end);
 		} finally {
 			NotesThread.stermThread();
 		}
@@ -209,20 +214,22 @@ public class NotesCalendar {
 	}
 	/**
 	 * Retrieve a list of Lotus Notes calendar entries.
+	 * @param session 
 	 */
 
-	private List<No2goCalendarEvent> getCalendarEntries(Database db, Date start, Date end) throws Exception {
+	private List<No2goCalendarEvent> getCalendarEntries(Session session, Database db, Date start, Date end) throws Exception {
 		List<No2goCalendarEvent> calendarEntries = new ArrayList<No2goCalendarEvent>();
 		// DocumentCollection entries = db
 		// .search("@IsAvailable(StartDateTime) & (StartDateTime >= @Now)");
-
+		
 		DocumentCollection entries = db.search(getSearchString(start, end));
 		int count = entries.getCount();
+		Directory directory = session.getDirectory();
 		// AAArrrrrrrgggghhhhhhhh
 		// The index must start with 1!
 		// It takes me 4 hours to figure it out
 		for (int i = 1; i <= count; i++) {
-			No2goCalendarEvent entry = createCalendarEntry(entries.getNthDocument(i), start, end);
+			No2goCalendarEvent entry = createCalendarEntry(directory, entries.getNthDocument(i), start, end);
 			if (entry != null) {
 				calendarEntries.add(entry);
 			}
@@ -269,7 +276,7 @@ public class NotesCalendar {
 	}
 
 	@SuppressWarnings("unchecked")
-	private No2goCalendarEvent createCalendarEntry(Document doc, Date start, Date end) throws NotesException {
+	private No2goCalendarEvent createCalendarEntry(Directory directory, Document doc, Date start, Date end) throws NotesException {
 		if (doc == null) {
 			return null;
 		}
@@ -307,6 +314,32 @@ public class NotesCalendar {
 		if (!isItemEmpty(lnItem)) {
 			String loc = cal.getLocation();
 			cal.setLocation(loc + lnItem.getText());
+		}
+
+		lnItem = doc.getFirstItem("SendTo");
+		if (!isItemEmpty(lnItem)) {
+			String attendees = lnItem.getText();
+			String[] alist = attendees.split(";");
+			for (String name : alist) {
+				String email = getEMail(directory,name);
+				No2goAttendee a = new No2goAttendee();
+				a.setDisplayName(getAttendeeName(name));
+				a.setEmail(email);
+				cal.getAttendees().add(a);
+			}
+		}
+
+		lnItem = doc.getFirstItem("CopyTo");
+		if (!isItemEmpty(lnItem)) {
+			String attendees = lnItem.getText();
+			String[] alist = attendees.split(";");
+			for (String name : alist) {
+				String email = getEMail(directory,name);
+				No2goAttendee a = new No2goAttendee();
+				a.setDisplayName(getAttendeeName(name) + " (optional)");
+				a.setEmail(email);
+				cal.getAttendees().add(a);
+			}
 		}
 
 		// Get the type of Lotus calendar entry
@@ -422,6 +455,53 @@ public class NotesCalendar {
 		return cal;
 	}
 
+	private String getAttendeeName(String name) {
+		if (name.startsWith("CN=")) {
+			String result = name.substring(3);
+			int index = result.indexOf("/");
+			if (index > 0) {
+				result = result.substring(0, index);
+						
+			}
+			return result;
+		}
+		return name;
+	}
+
+	/**
+	 * Get an eMail
+	 * 
+	 * @param directory
+	 * @param name
+	 * @return
+	 */
+	private String getEMail(Directory directory, String name) {
+		if (emailValidator.validate(name)) {
+			return name;
+		}
+
+		try {
+			String str = name;
+			int index = name.indexOf("@");
+			if (index > 0) {
+				str = name.substring(0,index);
+			}
+			@SuppressWarnings("rawtypes")
+			Vector mailInfo = directory.getMailInfo(str);
+			for (Object object : mailInfo) {
+				if (object instanceof String) {
+					str = (String) object;
+					if (emailValidator.validate(str)) {
+						return str;
+					}
+				}
+				
+			}
+		} catch (NotesException e) {
+		}
+		return "no.email@null.com";
+	}
+
 	private String removeLF(String desc) {
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < desc.length(); i++) {
@@ -467,9 +547,15 @@ public class NotesCalendar {
 		return false;
 	}
 
-	Database getDatabase() throws NotesException {
+	Session getNotesSession() throws NotesException {
 		Session notesSession = NotesFactory.createSessionWithFullAccess(password);
-		notesVersion = notesSession.getNotesVersion();
+		if (notesSession == null) {
+			throw new RuntimeException("Could not create Lotus Notes Session.\nServer: " + server + "\nDatabase: " + mailfile);
+		}
+		return notesSession;
+	}
+
+	Database getDatabase(Session notesSession) throws NotesException {
 		Database database = notesSession.getDatabase(server, mailfile, false);
 		if (database == null) {
 			throw new RuntimeException("Could not connect to Lotus Notes Database.\nServer: " + server + "\nDatabase: " + mailfile);
