@@ -30,6 +30,7 @@ public class PreferencePageGeneral
 	private IntegerFieldEditor time;
 	private BooleanFieldEditor isAutoSync;
 	private IntegerFieldEditor day;
+	private BooleanFieldEditor includeAttendees;
 
 	public PreferencePageGeneral() {
 		super(GRID);
@@ -67,6 +68,13 @@ public class PreferencePageGeneral
 				composite);
 		time.setEnabled(getPreferenceStore().getBoolean(SecurePreferenceStoreConstants.P_GENERAL_IS_AUTOSYNC), composite);
 		addField(time);
+		
+		includeAttendees  = new BooleanFieldEditor(
+				SecurePreferenceStoreConstants.P_INCLUDE_ATTENDEES, 
+				"Include Attendees", 
+				composite);
+		addField(includeAttendees);
+	
 		
 	}
 

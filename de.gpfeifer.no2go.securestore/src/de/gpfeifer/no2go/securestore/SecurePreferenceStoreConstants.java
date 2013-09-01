@@ -17,6 +17,7 @@ public class SecurePreferenceStoreConstants {
 	public static final String P_GENERAL_IS_AUTOSYNC = "general.isautosync";
 	public static final String P_GENERAL_AUTOSYNC_MIN = "general.autosyncmin";
 	public static final String P_GENERAL_NUMBER_DAYS = "general.numberofdays";
+	public static final String P_INCLUDE_ATTENDEES = "general.include.attendees";
 	
 	
 }

@@ -19,6 +19,11 @@
 package de.gpfeifer.no2go.e4.app.preference;
 
 import org.eclipse.core.internal.net.ProxySelector;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.internal.JFaceActivator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,6 +35,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.internal.net.NetUIMessages;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
+
+import de.gpfeifer.no2go.e4.app.Activator;
 
 public class PreferencePageProxy extends PreferencePage {
 
@@ -88,6 +96,9 @@ public class PreferencePageProxy extends PreferencePage {
 
 	protected void performApply() {
 		refresh();
+		if (providerCombo == null) {
+			return;
+		}
 		int sel = providerCombo.getSelectionIndex();
 		proxyEntriesComposite.performApply();
 		nonProxyHostsComposite.performApply();
@@ -127,8 +138,12 @@ public class PreferencePageProxy extends PreferencePage {
 	}
 	
 	private void refresh() {
-		proxyEntriesComposite.refresh();
-		nonProxyHostsComposite.refresh();
+		if (proxyEntriesComposite != null) {
+			proxyEntriesComposite.refresh();
+		}
+		if (nonProxyHostsComposite != null) {
+			nonProxyHostsComposite.refresh();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -137,6 +152,16 @@ public class PreferencePageProxy extends PreferencePage {
 	@Override
 	public String getTitle() {
 		return "Proxy";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.preference.PreferencePage#doGetPreferenceStore()
+	 */
+	@Override
+	protected IPreferenceStore doGetPreferenceStore() {
+		// TODO Auto-generated method stub
+		return new ScopedPreferenceStore(InstanceScope.INSTANCE, "org.eclipse.ui.net");
+
 	}
 
 }

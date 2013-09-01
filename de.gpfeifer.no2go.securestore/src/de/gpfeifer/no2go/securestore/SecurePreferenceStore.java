@@ -18,6 +18,7 @@ public class SecurePreferenceStore implements IPreferenceStore {
 			securePreferenceStore.setDefault(SecurePreferenceStoreConstants.P_GENERAL_AUTOSYNC_MIN, 10);
 			securePreferenceStore.setDefault(SecurePreferenceStoreConstants.P_GENERAL_IS_AUTOSYNC, false);
 			securePreferenceStore.setDefault(SecurePreferenceStoreConstants.P_GENERAL_NUMBER_DAYS, 30);
+			securePreferenceStore.setDefault(SecurePreferenceStoreConstants.P_INCLUDE_ATTENDEES, true);
 		}
 		return securePreferenceStore;
 	}

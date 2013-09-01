@@ -316,6 +316,16 @@ public class NotesCalendar {
 			cal.setLocation(loc + lnItem.getText());
 		}
 
+		lnItem = doc.getFirstItem("Chair");
+		if (!isItemEmpty(lnItem)) {
+			String chair = lnItem.getText();
+			String email = getEMail(directory,chair);
+			No2goAttendee a = new No2goAttendee();
+			a.setDisplayName(getAttendeeName(chair + " (Chair)"));
+			a.setEmail(email);
+			cal.getAttendees().add(a);
+		}
+
 		lnItem = doc.getFirstItem("SendTo");
 		if (!isItemEmpty(lnItem)) {
 			String attendees = lnItem.getText();

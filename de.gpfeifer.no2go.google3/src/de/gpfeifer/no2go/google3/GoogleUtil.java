@@ -21,7 +21,7 @@ public class GoogleUtil {
 
 	private static final String LOTUS_NOTES_ID = "lotus-notes-id";
 	
-	public static List<Event> convertRepeatingEvent(No2goCalendarEvent no2goEvent) {
+	public static List<Event> convertRepeatingEvent(No2goCalendarEvent no2goEvent, boolean includeAttendees) {
 		List<No2goWhen> whenList = no2goEvent.getWhenList();
 		if (whenList.size() <= 1) {
 			throw new RuntimeException("whenList.size() != 1");
@@ -29,7 +29,7 @@ public class GoogleUtil {
 
 		List<Event> result = new ArrayList<Event>();
 		for (No2goWhen no2goWhen : whenList) {
-			Event ge = createBaseEvent(no2goEvent);
+			Event ge = createBaseEvent(no2goEvent, includeAttendees);
 			setWhen(ge,no2goWhen);
 			result.add(ge);
 
@@ -37,8 +37,8 @@ public class GoogleUtil {
 		return result;
 	}
 
-	public static Event createEvent(No2goCalendarEvent ne) {
-		Event ge = createBaseEvent(ne);
+	public static Event createEvent(No2goCalendarEvent ne, boolean includeAttendees) {
+		Event ge = createBaseEvent(ne, includeAttendees);
 		setWhen(ge,ne.getWhenList());
 		return ge;
 	}
@@ -173,12 +173,14 @@ public class GoogleUtil {
 		return result;
 	}
 
-	private static Event createBaseEvent(No2goCalendarEvent ne) {
+	private static Event createBaseEvent(No2goCalendarEvent ne, boolean includeAttendees) {
 		Event ge = new Event();
 		ge.setSummary(ne.getTitle());
 		ge.setDescription(ne.getDescription());
 		ge.setLocation(ne.getLocation());
-		ge.setAttendees(createAttendeeList(ne));
+		if (includeAttendees) {
+			ge.setAttendees(createAttendeeList(ne));
+		}
 		setNodesId(ge, ne.getNotesId());
 		return ge;
 	}

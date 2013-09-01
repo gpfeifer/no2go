@@ -30,6 +30,8 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 	
 	List<No2goSynchListener> listenerList = Collections.synchronizedList(new ArrayList<No2goSynchListener>());
 
+	private boolean includeAttendees;
+
 	public void synch() throws Exception {
 		fireSynchBegin();
 		File no2godir = new File(System.getProperty("user.home"), ".no2go");
@@ -37,6 +39,7 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 		SecurePreferenceStore store = SecurePreferenceStore.get();
 		int numberOfDays = store.getInt(SecurePreferenceStoreConstants.P_GENERAL_NUMBER_DAYS);
+		includeAttendees = store.getBoolean(SecurePreferenceStoreConstants.P_INCLUDE_ATTENDEES);
 	
 		fireInfo("Reading Notes Calendar");
 		No2goCalendar notesCalendar = getLotusNotesNo2goCalendar(store, no2godir, numberOfDays);
@@ -58,32 +61,23 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 
 	private void synch(List<No2goCalendarEvent> notesEvents, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException, Exception {
-		int numberOfInserts = 0;
-		int numberOfRepeating = 0;
-		int numberOfUpdates = 0;
-		int numberOfDelete = 0;
-
 		for (No2goCalendarEvent notesEvent : notesEvents) {
 			if (notesEvent.isRepeating()) {
 				synchRepeating2(notesEvent, googleCalendar, googleEvents);
-				numberOfRepeating++;
 			} else {
 				Event googleEvent = getAndRemoveGoogleEvent(googleEvents,notesEvent.getNotesId());
 				if (googleEvent != null) {
-					numberOfUpdates += updateOrUnchanged(googleCalendar, googleEvent, notesEvent);
+					updateOrUnchanged(googleCalendar, googleEvent, notesEvent);
 				} else {
-					numberOfInserts = insert(googleCalendar, notesEvent);
+					insert(googleCalendar, notesEvent);
 
 				}
 			}
 		}
 		// Delete the remaining
-
 		for (Event  event : googleEvents) {
 			delete(googleCalendar,event);
-			numberOfDelete++;
 		}
-//		fireInfo("Last Synchronize: " + printNow() + " - Insert: " + numberOfInserts + " Update: " + numberOfUpdates + " Rec: " + numberOfRepeating + " Del: " + numberOfDelete);
 		fireInfo("Last Synchronize: " + printNow());
 	}
 
@@ -92,7 +86,7 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 	private void synchRepeating2(No2goCalendarEvent notesEvent, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException {
 		fireInfo("Repeating: " + notesEvent.getTitle());
 		List<Event> existingGoogleEvents = removeRepeating(googleEvents, notesEvent.getNotesId());
-		List<Event> notesEvents = GoogleUtil.convertRepeatingEvent(notesEvent);
+		List<Event> notesEvents = GoogleUtil.convertRepeatingEvent(notesEvent, includeAttendees);
 		for (Event event : notesEvents) {
 			Event existingEvent = getEvent(event,existingGoogleEvents);
 			if (existingEvent == null) {
@@ -185,7 +179,7 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 
 	private int insert(GoogleCalendarV3 googleCalendar, No2goCalendarEvent notesEvent) throws IOException {
-		Event event = GoogleUtil.createEvent(notesEvent);
+		Event event = GoogleUtil.createEvent(notesEvent, includeAttendees);
 		return insert(googleCalendar, event);
 	}
 
@@ -208,20 +202,20 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 	}
 
 
-	private void deleteAndRemove(GoogleCalendarV3 googleCalendar, List<Event> googleEvents, String notesId) throws IOException {
-		List<Event> deleteList = new ArrayList<Event>();
-		for (Event event : googleEvents) {
-			String nId = GoogleUtil.getNodesId(event);
-			if (nId != null && nId.equals(notesId)) {
-				deleteList.add(event);
-			}
-		}
-		for (Event delEvent : deleteList) {
-			googleCalendar.delete(delEvent);
-		}
-		googleEvents.removeAll(deleteList);
-		
-	}
+//	private void deleteAndRemove(GoogleCalendarV3 googleCalendar, List<Event> googleEvents, String notesId) throws IOException {
+//		List<Event> deleteList = new ArrayList<Event>();
+//		for (Event event : googleEvents) {
+//			String nId = GoogleUtil.getNodesId(event);
+//			if (nId != null && nId.equals(notesId)) {
+//				deleteList.add(event);
+//			}
+//		}
+//		for (Event delEvent : deleteList) {
+//			googleCalendar.delete(delEvent);
+//		}
+//		googleEvents.removeAll(deleteList);
+//		
+//	}
 
 
 

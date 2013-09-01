@@ -5,7 +5,6 @@ import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.net.ProxyPreferencePage;
 
 import de.gpfeifer.no2go.securestore.SecurePreferenceStore;
 
