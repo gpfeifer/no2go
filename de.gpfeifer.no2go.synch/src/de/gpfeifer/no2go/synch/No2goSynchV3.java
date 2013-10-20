@@ -61,6 +61,7 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 
 	private void synch(List<No2goCalendarEvent> notesEvents, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException, Exception {
+		logger.debug("SYNCH Notes Events: " + notesEvents.size() + " Google Events: " + googleEvents.size());
 		for (No2goCalendarEvent notesEvent : notesEvents) {
 			if (notesEvent.isRepeating()) {
 				synchRepeating2(notesEvent, googleCalendar, googleEvents);
@@ -85,20 +86,29 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 	private void synchRepeating2(No2goCalendarEvent notesEvent, GoogleCalendarV3 googleCalendar, List<Event> googleEvents) throws IOException {
 		fireInfo("Repeating: " + notesEvent.getTitle());
+		logger.debug("Synch repeating2 - begin");
+		logger.debug("Synch repeating " + notesEvent.getTitle());
 		List<Event> existingGoogleEvents = removeRepeating(googleEvents, notesEvent.getNotesId());
 		List<Event> notesEvents = GoogleUtil.convertRepeatingEvent(notesEvent, includeAttendees);
+		logger.debug("Converted to " + notesEvents.size() + " events");
+		int index = 0;
 		for (Event event : notesEvents) {
 			Event existingEvent = getEvent(event,existingGoogleEvents);
 			if (existingEvent == null) {
+				logger.debug("Insert " + index);
 				insert(googleCalendar, event);
 			} else {
+				logger.debug("Unchanged " + index);
 				existingGoogleEvents.remove(existingEvent);
 				fireUnchanged(existingEvent);
 			}
+			index++;
 		}
+		logger.debug("delete " + existingGoogleEvents.size());
 		for (Event event : existingGoogleEvents) {
 			delete(googleCalendar,event);
 		}
+		logger.debug("Synch repeating2 - end");
 	}
 
 
@@ -187,7 +197,6 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 	private int insert(GoogleCalendarV3 googleCalendar, Event event) throws IOException {
 		fireInfo("Insert " + event.getSummary());
-
 		fireInsert(event);
 		googleCalendar.insert(event);
 		return 1;
@@ -224,6 +233,7 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 		if (update(googleEvent,notesEvent)) {
 			fireInfo("Update " + notesEvent.getTitle());
 			fireUpdate(googleEvent);
+			logger.debug("Update " + notesEvent.getTitle());
 			googleCalendar.update(googleEvent);
 			number++;
 		} else {
@@ -235,17 +245,29 @@ class No2goSynchV3 implements No2goSynch, GoogleCalendarListener {
 
 	private boolean update(Event googleEvent, No2goCalendarEvent notesEvent) {
 		boolean update = false;
+
 		if (GoogleUtil.updateTitle(googleEvent, notesEvent)) {
+			logger.debug("Update title");
+			logger.debug("G<" + googleEvent.getSummary()+">");
+			logger.debug("N<" + notesEvent.getTitle()+">");
 			update = true;
 		}
 		if (GoogleUtil.updateDescription(googleEvent, notesEvent)) {
+			logger.debug("Update description");
+			logger.debug("G<" + googleEvent.getDescription()+">");
+			logger.debug("N<" + notesEvent.getDescription()+">");
 			update = true;
 		}
-		if (GoogleUtil.updateAttendees(googleEvent, notesEvent)) {
-			update = true;
-		}
+		
+		// This will cause that we always update if there attendees
+ 
+//		if (GoogleUtil.updateAttendees(googleEvent, notesEvent)) {
+//			logger.debug("Update attendees");
+//			update = true;
+//		}
 
 		if (GoogleUtil.updateNoRepeatingWhen(googleEvent, notesEvent)) {
+			logger.debug("Update no repeating");
 			update = true;
 			
 		}

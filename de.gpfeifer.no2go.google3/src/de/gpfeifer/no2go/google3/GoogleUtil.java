@@ -195,10 +195,13 @@ public class GoogleUtil {
 	}
 
 	public static boolean equalsAttendees(List<EventAttendee> googleAttendees, List<EventAttendee> notesAttendees) {
-		if (googleAttendees == null ) {
-			return false;
-			
+		if (googleAttendees == null && notesAttendees == null ) {
+			return true;
 		}
+		if (googleAttendees == null || notesAttendees == null ) {
+			return false;
+		}
+
 		if (googleAttendees.size() != notesAttendees.size()) {
 			return false;
 		}
@@ -212,7 +215,7 @@ public class GoogleUtil {
 
 	private static boolean containAttendee(List<EventAttendee> googleAttendees, EventAttendee notesAttendee) {
 		for (EventAttendee eventAttendee : googleAttendees) {
-			if (eventAttendee.getDisplayName().equals(notesAttendee.getDisplayName())) {
+			if (equals(eventAttendee.getDisplayName(), notesAttendee.getDisplayName())) {
 				return true;
 			}
 		}
@@ -259,16 +262,6 @@ public class GoogleUtil {
 	}
 
 	static boolean equals(String s1, String s2) {
-		if (s1 == null && s2 == null) {
-			return true;
-		}
-		if (s1 == null && s2.trim().equals("")) {
-			return true;
-		}
-		if (s2 == null && s1.trim().equals("")) {
-			return true;
-		}
-
 		return normalize(s1).equals(normalize(s2));
 	}
 
@@ -278,6 +271,9 @@ public class GoogleUtil {
 	 * @return
 	 */
 	static String normalize(String s) {
+		if (s == null) {
+			return "";
+		}
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
@@ -293,7 +289,7 @@ public class GoogleUtil {
 				break;
 			}
 		}
-		return result.toString();
+		return result.toString().trim();
 	}
 
 

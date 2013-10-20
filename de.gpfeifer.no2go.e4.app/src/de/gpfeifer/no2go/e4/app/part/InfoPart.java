@@ -1,5 +1,8 @@
 package de.gpfeifer.no2go.e4.app.part;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +79,7 @@ public class InfoPart implements No2goSynchListener {
 				synch.synch();
 
 			} catch (Exception e) {
-				return new Status(IStatus.ERROR, "de.gpfeifer.no2go.e4.app", e.getMessage());
+				return new Status(IStatus.ERROR, "de.gpfeifer.no2go.e4.app", e.toString());
 
 			} finally {
 				startDelayed();
@@ -131,7 +134,17 @@ public class InfoPart implements No2goSynchListener {
 								new Runnable() {
 									@Override
 									public void run() {
-										MessageDialog.openError(parent.getShell(), "Error", e.getMessage());										
+										String name = "error-" + new Date().getTime() +".txt";
+										MessageDialog.openError(parent.getShell(), "Error " + name, e.toString());
+										PrintStream out;
+										try {
+											out = new PrintStream(new File( name));
+											e.printStackTrace(out);
+											out.close();
+										} catch (FileNotFoundException e1) {
+										}
+
+										
 									}
 								});	
 

@@ -15,6 +15,7 @@ public interface No2goSynchListener {
 	void unchanged(Event googleEvent);
 
 	void synchBegin();
+	
 	void synchEnd();
 
 //	void googleInsert(List<No2goCalendarEvent> insertList);

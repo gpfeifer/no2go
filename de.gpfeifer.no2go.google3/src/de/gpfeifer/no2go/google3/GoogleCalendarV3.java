@@ -94,6 +94,7 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 			return null;
 		}
 		com.google.api.services.calendar.Calendar.Events.List eventList = calendar.events().list("primary");
+		logger.debug("Google event list size " + eventList.size());
 		eventList.setTimeMin(new DateTime(start, TimeZone.getDefault()));
 		eventList.setTimeMax(new DateTime(end, TimeZone.getDefault()));
 		List<Event> result = new ArrayList<Event>();

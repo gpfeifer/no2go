@@ -1,6 +1,10 @@
 package de.gpfeifer.no2go.e4.app.handlers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 
 import javax.inject.Named;
 
@@ -21,7 +25,18 @@ public class SynchronizeHandler {
 			No2goSynchFactory.create().synch();
 			MessageDialog.openInformation(shell, "Info", "Done");
 		} catch (Exception e) {
-			MessageDialog.openError(shell, "Error", e.getMessage());
+			
+			String name = "error-" + new Date().getTime() +".txt";
+			MessageDialog.openError(shell, "Error " + name, e.toString());
+			PrintStream out;
+			try {
+				out = new PrintStream(new File( name));
+				e.printStackTrace(out);
+				out.close();
+			} catch (FileNotFoundException e1) {
+			}
+
+			
 		}
 		
 	}
