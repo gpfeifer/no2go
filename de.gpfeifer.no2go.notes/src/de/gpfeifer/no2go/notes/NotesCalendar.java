@@ -584,13 +584,28 @@ public class NotesCalendar {
 		}
 
 		StringBuffer buffer = new StringBuffer("@IsAvailable(CalendarDateTime)");
-		buffer.append(" & StartDateTime >= @Date(").append(startDay.get(1)).append("; ").append(startDay.get(2) + 1).append("; ").append(startDay.get(5))
-				.append("; ").append(startDay.get(10)).append("; ").append(startDay.get(12)).append("; ").append(startDay.get(13)).append(")");
+		buffer.append(" & StartDateTime >= @Date(").append(getNotesDate(startDay)).append(")");
 		if (endDay != null) {
-			buffer.append(" & EndDateTime <= @Date(").append(endDay.get(1)).append("; ").append(endDay.get(2) + 1).append("; ").append(endDay.get(5))
-					.append("; ").append(endDay.get(10)).append("; ").append(endDay.get(12)).append("; ").append(endDay.get(13)).append(")");
+			buffer.append(" & EndDateTime <= @Date(").append(getNotesDate(endDay)).append(")");
 		}
 		// searchFormulaStringBuffer.append(" & (AppointmentType = \"3\" | AppointmentType = \"0\")");
+		return buffer.toString();
+	}
+	
+	String getNotesDate(GregorianCalendar d) {
+		StringBuffer buffer = new StringBuffer("");
+		buffer
+			.append(d.get(1))
+			.append("; ")
+			.append(d.get(2) + 1)
+			.append("; ")
+			.append(d.get(5))
+			.append("; ")
+			.append(d.get(10));
+//			.append("; ")
+//			.append(d.get(12))
+//			.append("; ")
+//			.append(d.get(13));
 		return buffer.toString();
 	}
 }

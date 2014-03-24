@@ -6,13 +6,10 @@ import org.eclipse.swt.widgets.Shell;
 
 public class WindowCloseHandler implements IWindowCloseHandler {
 
+
 	@Override
 	public boolean close(MWindow window) {
-		Object widget = window.getWidget();
-		if (widget instanceof Shell) {
-			Shell shell = (Shell) widget;
-			shell.setMinimized(true);
-		}
+		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -30,6 +30,7 @@
     <tycho-extras.version>0.16.0</tycho-extras.version>
 
     <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
+    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
     <tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
     
 
@@ -40,8 +41,8 @@
 
   <repositories>
     <repository>
-      <id>juno</id>
-      <url>${juno-repo.url}</url>
+      <id>kepler</id>
+      <url>${kepler-repo.url}</url>
       <layout>p2</layout>
     </repository>
 

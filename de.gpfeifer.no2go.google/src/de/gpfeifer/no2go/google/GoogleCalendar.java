@@ -44,8 +44,12 @@ public class GoogleCalendar extends AbstractGoogleCalendar implements IGoogleCal
 		CalendarService cs = getCalendarService();
 		CalendarQuery myQuery = new CalendarQuery(getFeedURL());
 
-		myQuery.setMinimumStartTime(new DateTime(start,TimeZone.getDefault()));
-		myQuery.setMaximumStartTime(new DateTime(end,TimeZone.getDefault()));
+		DateTime startTime = new DateTime(start,TimeZone.getDefault());
+		startTime.setDateOnly(true);
+		myQuery.setMinimumStartTime(startTime);
+		DateTime endTime = new DateTime(end,TimeZone.getDefault());
+		endTime.setDateOnly(true);
+		myQuery.setMaximumStartTime(endTime);
 		myQuery.setStringCustomParameter("orderby", "starttime");
 		myQuery.setStringCustomParameter("sortorder", "ascending");
 		myQuery.setMaxResults(65535);
