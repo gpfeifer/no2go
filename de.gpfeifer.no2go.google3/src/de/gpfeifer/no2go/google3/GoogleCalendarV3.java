@@ -1,6 +1,8 @@
 package de.gpfeifer.no2go.google3;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,8 +97,15 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 		}
 		com.google.api.services.calendar.Calendar.Events.List eventList = calendar.events().list("primary");
 		logger.debug("Google event list size " + eventList.size());
-		eventList.setTimeMin(new DateTime(start, TimeZone.getDefault()));
-		eventList.setTimeMax(new DateTime(end, TimeZone.getDefault()));
+//		DateTime startTime = new DateTime(true, start.getTime(), TimeZone.getDefault().getOffset(start.getTime()));
+//		DateTime endTime = new DateTime(true, end.getTime(), TimeZone.getDefault().getOffset(end.getTime()));
+//		DateTime startTime = new  DateTime(end, TimeZone.getDefault());
+//		DateTime endTime = new DateTime(end, TimeZone.getDefault());
+		DateTime startTime = new  DateTime(dateWithoutTime(start));
+		DateTime endTime = new DateTime(dateWithoutTime(end));
+
+		eventList.setTimeMin(startTime);
+		eventList.setTimeMax(endTime);
 		List<Event> result = new ArrayList<Event>();
 		String pageToken = null;
 		logger.debug("End getGoogleEvents");
@@ -154,6 +163,16 @@ public class GoogleCalendarV3 extends AbstractGoogleCalendar implements IGoogleC
 	 * :"Europe/Berlin"},"status":"confirmed","summary":"High Noon","updated":
 	 * "2013-04-18T05:53:49.968Z"}
 	 */
+
+	Date dateWithoutTime(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");      
+	    try {
+			return sdf.parse(sdf.format(date));
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 	private No2goCalendarEvent createNo2goEvent(Event event) {
 		List<String> recurrence = event.getRecurrence();

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -219,10 +220,14 @@ public class NotesCalendar {
 
 	private List<No2goCalendarEvent> getCalendarEntries(Session session, Database db, Date start, Date end) throws Exception {
 		List<No2goCalendarEvent> calendarEntries = new ArrayList<No2goCalendarEvent>();
+		
 		// DocumentCollection entries = db
 		// .search("@IsAvailable(StartDateTime) & (StartDateTime >= @Now)");
-		
-		DocumentCollection entries = db.search(getSearchString(start, end));
+//		Calendar calc = Calendar.getInstance();
+//		calc.setTime(start);
+//		calc.add(Calendar.DAY_OF_MONTH, -1);
+//		Date newStart = calc.getTime();
+		DocumentCollection entries = db.search(getSearchString(start , end));
 		int count = entries.getCount();
 		Directory directory = session.getDirectory();
 		// AAArrrrrrrgggghhhhhhhh
@@ -452,7 +457,7 @@ public class NotesCalendar {
 			}
 			if (!isItemEmpty(lnItem)) {
 				when.setEndTime(lnItem.getDateTimeValue().toJavaDate());
-				if (!when.getEndTime().before(new Date())) {
+				if (!when.getEndTime().before(yesterday())) {
 					cal.getWhenList().add(when);
 				}
 			}
@@ -463,6 +468,13 @@ public class NotesCalendar {
 			return null;
 		}
 		return cal;
+	}
+
+	private Date yesterday() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		return calendar.getTime();
 	}
 
 	private String getAttendeeName(String name) {
@@ -599,9 +611,10 @@ public class NotesCalendar {
 			.append("; ")
 			.append(d.get(2) + 1)
 			.append("; ")
-			.append(d.get(5))
-			.append("; ")
-			.append(d.get(10));
+			.append(d.get(5));
+
+//			.append("; ")
+//			.append(d.get(10))
 //			.append("; ")
 //			.append(d.get(12))
 //			.append("; ")
